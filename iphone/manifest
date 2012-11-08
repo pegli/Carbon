@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 0.1
+apiversion: 2
+description: My module
+author: Your Name
+license: Specify your license
+copyright: Copyright (c) 2012 by Your Company
+
+
+# these should not be edited
+name: carbon
+moduleid: appersonlabs.carbon
+guid: 153841ac-ef8d-4d93-b5c5-c57043ee570c
+platform: iphone
+minsdk: 2.1.2.GA

@@ -1,0 +1,3 @@
+[submodule "iphone/JSONKit"]
+	path = iphone/JSONKit
+	url = https://github.com/johnezang/JSONKit.git
