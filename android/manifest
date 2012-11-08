@@ -9,10 +9,11 @@ author: Apperson Labs
 license: Apache2
 copyright: Copyright (c) 2012 by Apperson Labs
 
+
 # these should not be edited
-name: android
+name: carbon
 moduleid: appersonlabs.carbon
-guid: 46a5b60d-bdb7-4de0-9736-9831ce74c431
+guid: 153841ac-ef8d-4d93-b5c5-c57043ee570c
 platform: android
 minsdk: 2.1.2.GA
 commonjs: true
