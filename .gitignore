@@ -1,8 +1,9 @@
 tmp
 bin
 build
-*.zip
+appersonlabs*.zip
 com.appersonlabs.*
 .*
 *.xcodeproj/project.xcworkspace
 *.xcodeproj/xcuserdata
+build.properties
