@@ -1,0 +1,18 @@
+{
+  "name": "Carbon",
+  "repo": "appersonlabs/Carbon",
+  "version": "0.1",
+  "author": "Apperson Labs",
+  "license": "Apache2",
+  "description": "A Titanium Mobile native framework - Use JSON to natively build your UI!",
+  "main": "Carbon",
+  "keywords": ["android","ios","framework"],
+  "dependencies": {},
+  "development": {},
+  "guid": "153841ac-ef8d-4d93-b5c5-c57043ee570c",
+  "minsdk": "2.1.2.GA",
+  "packed": true,
+  "files": [
+    "carbon-0.1.zip"
+  ]
+}
