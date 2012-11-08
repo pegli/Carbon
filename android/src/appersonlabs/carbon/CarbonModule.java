@@ -204,6 +204,8 @@ public class CarbonModule extends KrollModule {
             }
             return proxy;
         }
+        
+        return null;
     }
 
     @Kroll.method
