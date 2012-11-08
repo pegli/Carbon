@@ -4,10 +4,10 @@
 #
 version: 0.1
 apiversion: 2
-description: My module
-author: Your Name
-license: Specify your license
-copyright: Copyright (c) 2012 by Your Company
+description: A module to allow the native parsing of JSON to create UI
+author: Apperson Labs
+license: Apache2
+copyright: Copyright (c) 2012 by Apperson Labs
 
 
 # these should not be edited
