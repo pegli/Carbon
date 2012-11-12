@@ -1,4 +1,4 @@
-<project name="android" default="dist">
+<project name="carbon" default="dist">
 	<description>
 		Ant build script for Titanium Android module android
 	</description>
