@@ -1,0 +1,20 @@
+/*
+  TSS files should support multiline comments
+*/
+"Window": {
+  "backgroundColor": "yellow",
+},
+// also single line comments
+Label: {
+  align: Ti.UI.TEXT_ALIGNMENT_CENTER
+},
+TableView: {
+  style: Ti.UI.iPhone.TableViewStyle.PLAIN
+},
+"#testid": {
+},
+'.testclass': {
+},
+Label[platform=ios]: {
+  backgroundColor: 'blue'
+}

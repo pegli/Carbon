@@ -10,6 +10,7 @@
 #import "TiUtils.h"
 #import "TiViewProxy.h"
 #import "JSONKit.h"
+#import "CBStylesheet.h"
 
 @interface AppersonlabsCarbonModule ()
 - (NSDictionary *)loadUIDefFromPath:(NSString *)path;
@@ -19,6 +20,7 @@
 @implementation AppersonlabsCarbonModule
 
 @synthesize uimodule;
+@synthesize stylesheets;
 
 #pragma mark Internal
 
@@ -36,6 +38,13 @@
 
 #pragma mark Lifecycle
 
+- (id)init {
+    if (self = [super init]) {
+        self.stylesheets = [NSMutableArray array];
+    }
+    return self;
+}
+
 -(void)startup {
 	[super startup];
     
@@ -51,8 +60,8 @@
 #pragma mark Cleanup
 
 -(void)dealloc {
-	[super dealloc];
     RELEASE_TO_NIL(tibs);
+	[super dealloc];
 }
 
 #pragma mark -
@@ -106,6 +115,24 @@
     return [[[sResult reverseObjectEnumerator] allObjects] componentsJoinedByString:@" "];
 }
 
+- (NSString *)contentsOfFileAtPath:(NSString *)path {
+    NSString * abspath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:path];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:abspath]) {
+        NSLog(@"[WARN] UIBuilder source file '%@' not found", path);
+        return nil;
+    }
+    
+    NSError * error = nil;
+    NSString * result = [NSString stringWithContentsOfFile:abspath encoding:NSUTF8StringEncoding error:&error];
+    if (error) {
+        NSLog(@"error = %@", error);
+        NSLog(@"[WARN] Cannot read UIBuilder source file '%@'", path);
+        return nil;
+    }
+    
+    return result;
+}
 
 - (NSDictionary *)loadUIDefFromPath:(NSString *)path {
     NSDictionary *tib = nil;
@@ -121,24 +148,14 @@
 		}
 	}
     
-    NSString * abspath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:path];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:abspath]) {
-        NSLog(@"[WARN] UIBuilder source file '%@' not found", path);
-        return nil;
-    }
-    
-    NSData * data = [NSData dataWithContentsOfFile:abspath];
-    if (!data) {
-        NSLog(@"[WARN] Cannot read UIBuilder source file '%@'", path);
-        return nil;
-    }
+    NSString * data = [self contentsOfFileAtPath:path];
+    if (!data) return nil;
     
     NSError * error;
-    tib = [data objectFromJSONDataWithParseOptions: JKParseOptionComments error: &error];
+    tib = [data objectFromJSONStringWithParseOptions: JKParseOptionComments error: &error];
     
     if (!tib) {
-        const char* jsonString = [[NSString stringWithUTF8String:[data bytes]] UTF8String];        
+        const char* jsonString = [data UTF8String];
         [NSException raise:@"Invalid JSON file" format:@"JSON parse error in file %@ on line %@", path, [self LintDescription:jsonString length:strlen(jsonString) error:error]];
 
     } else {
@@ -156,7 +173,7 @@
         NSLog(@"[ERROR] UIBuilder source must contain a single object: %@", dict);
         return nil;
     }
-    
+
     NSString * key = [[dict allKeys] objectAtIndex:0];
     
     // Clean the key for cleaner input
@@ -165,7 +182,6 @@
     key = [key stringByReplacingOccurrencesOfString:@"." withString:@""];
     
     NSMutableDictionary * params = [NSMutableDictionary dictionaryWithDictionary:[dict objectForKey:key]];
-    
     
     // Allow for platform specific UI, reject elements that dont exist on the platform
     NSArray* platforms = [params objectForKey:@"platforms"];
@@ -231,6 +247,11 @@
                 [params setValue: kTiBehaviorSize forKey:k];
             }
         }
+    }
+    
+    // apply stylesheets
+    for (CBStylesheet * stylesheet in self.stylesheets) {
+        [stylesheet applyStylesForKey:key toParams:params];
     }
     
     // create objects that must be added at creation
@@ -354,6 +375,22 @@
     [returnObject setObject:[cache autorelease] forKey:@"proxy_cache"];
     
     return [returnObject autorelease];
+}
+
+- (void)tssFromPath:(id)args {
+    NSString * path;
+    ENSURE_ARG_AT_INDEX(path, args, 0, NSString)
+
+    NSString * abspath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:path];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:abspath]) {
+        NSLog(@"[WARN] TSS file '%@' not found", path);
+        return;
+    }
+    
+    NSLog(@"[INFO] Loading: %@", path);
+    
+    [self.stylesheets addObject:[CBStylesheet stylesheetFromFile:abspath]];
 }
 
 @end

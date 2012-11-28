@@ -1,5 +1,8 @@
 // open a single window
 var C = Carbon = require('appersonlabs.carbon');
+
+C.UI.addTSS('ui/test1.tss');
+
 var result = Carbon.UI.load('ui/test1.json');
 result.open();
 

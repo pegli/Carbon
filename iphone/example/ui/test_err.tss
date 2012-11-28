@@ -1,0 +1,6 @@
+"Window": {
+  "backgroundColor": "yellow",
+},
+Label: {
+  align: Ti.UI.TEXT_ALIGNMENT_CENTER
+}

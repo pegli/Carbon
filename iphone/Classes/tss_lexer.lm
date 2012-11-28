@@ -1,0 +1,144 @@
+%{
+#import "y.tab.h"
+#import "UIModule.h"
+
+#define STR(s)      (yylval.string = [NSString stringWithCString:s encoding:NSUTF8StringEncoding])
+#define TOKEN(t)    (yylval.token = t)
+#define LONG(v)     (yylval.number = [NSNumber numberWithLong:v])
+#define DOUBLE(v)   (yylval.number = [NSNumber numberWithDouble:v])
+#define BOOL(v)     (yylval.number = [NSNumber numberWithBool:v])
+
+#define CONST(m,n)  (yylval.number = get_module(m).n)
+
+int parens;
+
+// TODO extend for other Ti modules (Map, etc.)
+UIModule * uimodule;
+NSNumber * uiconstant(const char * path) {
+    if (!uimodule) {
+        uimodule = [[UIModule alloc] init];
+    }
+    
+    NSArray * parts = [[NSString stringWithCString:path encoding:NSUTF8StringEncoding] componentsSeparatedByString:@"."];
+    NSUInteger nparts = [parts count];
+    if (nparts < 3) {
+        NSLog(@"[ERROR] invalid constant: %s", path);
+        return nil;
+    }
+    
+    id context = uimodule;
+    for (int i=2; context && i < nparts; i++) {
+        NSString * part = [parts objectAtIndex:i];
+        SEL sel = NSSelectorFromString(part);
+        if ([context respondsToSelector:sel]) {
+            context = [context performSelector:sel];
+        }
+    }
+    
+    if (!context) {
+        NSLog(@"[ERROR] could not determine value of constant %s", path);
+        return nil;
+    }
+    
+    return context;
+}
+
+%}
+
+
+%option noyywrap yylineno
+
+%x sqstr
+%x dqstr
+%x expr
+%x comment
+
+DIGIT           [0-9]
+DIGIT1          [1-9]
+INT             {DIGIT1}{DIGIT}*
+FRACT           "."{DIGIT}+
+FLOAT           -?({INT}|0)?{FRACT}?{EXP}?
+EXP             [eE][+-]?{DIGIT}+
+
+
+UNICODE         \\u[A-Fa-f0-9]{4}
+ESCAPECHAR      \\["''/bfnrt]
+CHAR            [^"'\\]|{ESCAPECHAR}|{UNICODE}
+
+SQUOTE          '
+SQUOTE_STR      ([^'\\]|{ESCAPECHAR}|{UNICODE})*
+
+DQUOTE          \"
+DQUOTE_STR      ([^"\\]|{ESCAPECHAR}|{UNICODE})*
+
+
+IDPART          [A-Za-z_][A-Za-z0-9_]*
+IDENTIFIER      {IDPART}(\.{IDPART})*
+
+PREDICATE       \[{IDPART}={IDPART}([, ]{IDPART}={IDPART})*\]
+
+STYLENAME       [#\.]?{IDENTIFIER}({PREDICATE})?
+
+TI              Ti(tanium)?\.
+
+WHITESPACE      [ \n\t]
+
+%%
+
+WPATH\(                 { BEGIN(expr); parens=1; NSLog(@"[WARNING] WPATH is not supported"); }
+expr\(                  { BEGIN(expr); parens=1; NSLog(@"[WARNING] expression values are not supported"); }
+<expr>\(                { parens++; }
+<expr>[^)]
+<expr>\)                { parens--; if (parens==0) { BEGIN(INITIAL); return TOKEN(T_NULL); } }
+
+"/*"                    { BEGIN(comment); }
+<comment>.|\n
+<comment>"*/"           { BEGIN(INITIAL); }
+"//".*
+
+true                    { BOOL(YES); return T_BOOL; }
+false                   { BOOL(NO); return T_BOOL; }
+null                    { return TOKEN(T_NULL); }
+
+:                       { return TOKEN(T_COLON); }
+,                       { return TOKEN(T_COMMA); }
+\[                      { return TOKEN(T_ARRAY_START); }
+\]                      { return TOKEN(T_ARRAY_END); }
+\{                      { return TOKEN(T_OBJECT_START); }
+\}                      { return TOKEN(T_OBJECT_END); }
+
+{INT}                   { LONG(atol(yytext)); return T_NUMBER; }
+{FLOAT}                 { DOUBLE(atof(yytext)); return T_NUMBER; }
+
+{TI}"UI.SIZE"           { yylval.string = kTiBehaviorSize; return T_STRING; }
+{TI}"UI.FILL"           { yylval.string = kTiBehaviorFill; return T_STRING; }
+
+{TI}"UI."{IDENTIFIER}   { yylval.number = uiconstant(yytext); return yylval.number ? T_NUMBER : TOKEN(T_NULL); }
+
+{TI}{IDENTIFIER}        { NSLog(@"[WARNING] skipping unknown constant %s", yytext); return TOKEN(T_NULL); }
+
+{IDENTIFIER}            { STR(yytext); return T_IDENTIFIER; }
+
+{STYLENAME}             { STR(yytext); return T_STYLENAME; }
+
+{SQUOTE}                { BEGIN(sqstr); }
+<sqstr>{IDENTIFIER}     { STR(yytext); return T_QUOTED_IDENTIFIER; }
+<sqstr>{STYLENAME}      { STR(yytext); return T_QUOTED_STYLENAME; }
+<sqstr>{SQUOTE_STR}     { STR(yytext); return T_STRING; }
+<sqstr>{SQUOTE}         { BEGIN(INITIAL); }
+
+{SQUOTE}{SQUOTE}        { STR(""); return T_STRING; }
+
+{DQUOTE}                { BEGIN(dqstr); }
+<dqstr>{IDENTIFIER}     { STR(yytext); return T_QUOTED_IDENTIFIER; }
+<dqstr>{STYLENAME}      { STR(yytext); return T_QUOTED_STYLENAME; }
+<dqstr>{DQUOTE_STR}     { STR(yytext); return T_STRING; }
+<dqstr>{DQUOTE}         { BEGIN(INITIAL); }
+
+{DQUOTE}{DQUOTE}        { STR(""); return T_STRING; }
+
+{WHITESPACE}            { /* ignore */ }
+
+.                       { NSLog(@"unrecognized token: %s", yytext); }
+
+%%
