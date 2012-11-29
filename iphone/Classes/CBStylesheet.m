@@ -81,14 +81,18 @@ typedef struct {
                     ;
             }
             
-            // merge into existing styles (the "cascading" part)
-            // TODO add predicates
-            NSMutableDictionary * existing = [dest objectForKey:selector.name];
-            if (existing) {
-                [existing addEntriesFromDictionary:style];
-                style = existing;
+            if (![selector.predicates containsObject:@"platform=android"]) {
+                // TODO add formfactor predicate
+                
+                // merge into existing styles (the "cascading" part)
+                NSMutableDictionary * existing = [dest objectForKey:selector.name];
+                if (existing) {
+                    [existing addEntriesFromDictionary:style];
+                    style = existing;
+                }
+                [dest setObject:style forKey:selector.name];
             }
-            [dest setObject:style forKey:selector.name];
+            
         }
     }
     return self;
@@ -107,9 +111,6 @@ typedef struct {
 - (TssSelector)parseSelector:(NSString *)str {
     TssSelector result = {0, nil, nil};
 
-    NSLog(@"parsing %@", str);
-    
-    // TODO predicates
     NSArray * matches = [selectorRegex matchesInString:str options:0 range:NSMakeRange(0, [str length])];
     NSTextCheckingResult * match = [matches objectAtIndex:0]; // should only be one match
     
@@ -155,11 +156,18 @@ typedef struct {
     NSString * proxyId = [params valueForKey:@"id"];
     NSString * proxyClass = [params valueForKey:@"class"];
 
-    NSDictionary * d = [styles_by_type objectForKey:proxyName];
-    if (d) [params addEntriesFromDictionary:d];
+    NSMutableDictionary * result = [NSMutableDictionary dictionary];
+
+    // order of application is: type, class, ID
+    [result addEntriesFromDictionary:[styles_by_type objectForKey:proxyName]];
+    [result addEntriesFromDictionary:[styles_by_class objectForKey:proxyClass]];
+    [result addEntriesFromDictionary:[styles_by_id objectForKey:proxyId]];
     
-    [params addEntriesFromDictionary:[styles_by_class objectForKey:proxyClass]];
-    [params addEntriesFromDictionary:[styles_by_id objectForKey:proxyId]];
+    // initialization parameters always override styles
+    [result addEntriesFromDictionary:params];
+    
+    [params removeAllObjects];
+    [params addEntriesFromDictionary:result];    
 }
 
 @end
