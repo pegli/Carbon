@@ -1,0 +1,182 @@
+%{
+extern int yylineno;
+extern FILE * yyin;
+extern int yylex();
+void yyerror(const char *s);
+
+NSMutableArray * stylesheet;
+%}
+
+%error-verbose
+%locations
+
+%union {
+int token;
+id idtype;
+NSString * string;
+NSNumber * number;
+NSMutableArray * mutarray;
+NSMutableDictionary * mutdict;
+}
+
+%token <number> T_BOOL
+%token <token> T_NULL
+%token <number> T_NUMBER
+%token <string> T_STRING
+%token <string> T_IDENTIFIER T_QUOTED_IDENTIFIER
+%token <token> T_COLON T_COMMA
+%token <token> T_ARRAY_START T_ARRAY_END
+%token <token> T_OBJECT_START T_OBJECT_END
+%token <string> T_STYLENAME T_QUOTED_STYLENAME
+%token <string> T_TICONST
+
+%type <mutarray> styles
+%type <mutdict> declarations
+%type <idtype> value
+%type <mutarray> array array_vals
+%type <mutdict> object object_vals
+%type <string> object_key
+%type <string> decl_key
+%type <string> selector
+
+%start stylesheet
+
+%%
+
+stylesheet      :   styles  {
+                        // TODO release/nil stylesheet var here?
+                        stylesheet = $1;
+                    }
+                |   styles T_COMMA {
+                        // allow trailing comma
+                        stylesheet = $1;
+                    }
+                ;
+
+styles          :   /* empty */ {
+                        $$ = [NSMutableArray arrayWithCapacity:0];
+                    }
+                |   selector T_COLON T_OBJECT_START declarations T_OBJECT_END {
+                        $$ = [NSMutableArray array];
+                        if ($4) {
+                            [$$ addObject:[NSDictionary dictionaryWithObject:$4 forKey:$1]];
+                        }
+                    }
+                |   styles T_COMMA selector T_COLON T_OBJECT_START declarations T_OBJECT_END {
+                        if ($6) {
+                            [$1 addObject:[NSDictionary dictionaryWithObject:$6 forKey:$3]];
+                        }
+                    }
+                ;
+
+selector        :   T_STYLENAME
+                |   T_IDENTIFIER
+                |   T_QUOTED_IDENTIFIER
+                |   T_QUOTED_STYLENAME
+                ;
+
+declarations    :   /* empty */ {
+                        $$ = [NSMutableDictionary dictionaryWithCapacity:0];
+                    }
+                |   decl_key T_COLON value {
+                        $$ = [NSMutableDictionary dictionary];
+                        [$$ setObject:$3 forKey:$1];
+                    }
+                |   declarations T_COMMA decl_key T_COLON value {
+                        [$1 setObject:$5 forKey:$3];
+                    }
+                |   declarations T_COMMA {
+                        // allow trailing comma
+                        $$ = $1;
+                    }
+                ;
+
+decl_key        :   T_STYLENAME
+                |   T_QUOTED_STYLENAME
+                |   T_IDENTIFIER
+                |   T_QUOTED_IDENTIFIER
+                ;
+
+string          :   T_STRING
+                |   T_QUOTED_IDENTIFIER
+                |   T_QUOTED_STYLENAME
+                ;
+
+array           :   T_ARRAY_START array_vals T_ARRAY_END {
+                        $$ = $2;
+                    }
+                ;
+
+array_vals      :   /* empty */ {
+                        $$ = [NSMutableArray arrayWithCapacity:0];
+                    }
+                |   value {
+                        $$ = [NSMutableArray array];
+                        [$$ addObject:$1];
+                    }
+                |   array_vals T_COMMA value {
+                        [$1 addObject:$3];
+                    }
+                ;
+
+object          :   T_OBJECT_START object_vals T_OBJECT_END {
+                        $$ = $2;
+                    }
+                ;
+
+object_key      :   T_IDENTIFIER
+                |   T_QUOTED_IDENTIFIER
+                ;
+
+object_vals     :   /* empty */ {
+                        $$ = [NSMutableDictionary dictionaryWithCapacity:0];
+                    }
+                |   object_key T_COLON value {
+                        $$ = [NSMutableDictionary dictionaryWithCapacity:0];
+                        [$$ setObject:$3 forKey:$1];
+                    }
+                |   object_vals T_COMMA object_key T_COLON value {
+                        [$1 setObject:$5 forKey:$3];
+                    }
+                ;
+
+value           :   T_NULL  { $$ = [NSNull null]; }
+                |   T_BOOL
+                |   T_NUMBER
+                |   T_TICONST
+                |   string
+                |   array
+                |   object
+                ;
+        
+%%
+
+void yyerror(const char *s) {
+    NSLog(@"[ERROR] line %d: %s", yylineno, s);
+}
+
+int doparse(const char *s) {
+    char buf[15];
+    int fd;
+    
+    if (!s) {
+        return 0;
+    }
+    
+    strcpy(buf, "/tmp/lex.XXXXX");
+    fd = mkstemp(buf);
+    if (fd < 0) {
+        NSLog(@"Could not create temporary file: %s", strerror(errno));
+        return 0;
+    }
+    
+    unlink(buf);
+    write(fd, s, strlen(s));
+    lseek(fd, 0, SEEK_SET);
+    yyin = fdopen(fd, "r");
+    do {
+        yyparse();
+    } while (!feof(yyin));
+    fclose(yyin);
+    return 1;
+}

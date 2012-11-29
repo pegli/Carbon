@@ -346,6 +346,9 @@ var main_namespace = {
 			}
 		
 			return false;
+		},
+		addTSS: function(path) {
+		  kroll.tssFromPath(path);
 		}
 	},
 	Platform: ti_properties.Platform,

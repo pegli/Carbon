@@ -11,4 +11,5 @@
 	NSMutableDictionary *tibs;
 }
 @property (nonatomic, strong) TiModule * uimodule;
+@property (nonatomic, strong) NSMutableArray * stylesheets;
 @end

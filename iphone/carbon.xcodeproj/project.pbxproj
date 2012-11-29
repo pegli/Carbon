@@ -31,6 +31,10 @@
 		D91CDE35161B98EB002CA1D7 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D91CDE32161B9853002CA1D7 /* JSONKit.m */; };
 		D91CDE3B161B9991002CA1D7 /* TiViewProxy+ElementAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = D91CDE3A161B993A002CA1D7 /* TiViewProxy+ElementAccess.m */; };
 		D91CDE3C161B9995002CA1D7 /* JSONKit.h in Sources */ = {isa = PBXBuildFile; fileRef = D91CDE31161B9853002CA1D7 /* JSONKit.h */; };
+		DA4D8D40166435CF00F647D7 /* tss_lexer.lm in Sources */ = {isa = PBXBuildFile; fileRef = DA4D8D3F166435CF00F647D7 /* tss_lexer.lm */; };
+		DA4D8D451664362D00F647D7 /* CBStylesheet.h in Headers */ = {isa = PBXBuildFile; fileRef = DA4D8D431664362D00F647D7 /* CBStylesheet.h */; };
+		DA4D8D461664362D00F647D7 /* CBStylesheet.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4D8D441664362D00F647D7 /* CBStylesheet.m */; };
+		DA4D8D481664364300F647D7 /* tss_parser.ym in Sources */ = {isa = PBXBuildFile; fileRef = DA4D8D471664364300F647D7 /* tss_parser.ym */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +60,10 @@
 		D91CDE32161B9853002CA1D7 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		D91CDE39161B993A002CA1D7 /* TiViewProxy+ElementAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TiViewProxy+ElementAccess.h"; path = "Classes/TiViewProxy+ElementAccess.h"; sourceTree = "<group>"; };
 		D91CDE3A161B993A002CA1D7 /* TiViewProxy+ElementAccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "TiViewProxy+ElementAccess.m"; path = "Classes/TiViewProxy+ElementAccess.m"; sourceTree = "<group>"; };
+		DA4D8D3F166435CF00F647D7 /* tss_lexer.lm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; name = tss_lexer.lm; path = Classes/tss_lexer.lm; sourceTree = "<group>"; };
+		DA4D8D431664362D00F647D7 /* CBStylesheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CBStylesheet.h; path = Classes/CBStylesheet.h; sourceTree = "<group>"; };
+		DA4D8D441664362D00F647D7 /* CBStylesheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CBStylesheet.m; path = Classes/CBStylesheet.m; sourceTree = "<group>"; };
+		DA4D8D471664364300F647D7 /* tss_parser.ym */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.yacc; name = tss_parser.ym; path = Classes/tss_parser.ym; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +114,10 @@
 				24DD6CF81134B3F500162E58 /* AppersonlabsCarbonModule.m */,
 				D91CDE39161B993A002CA1D7 /* TiViewProxy+ElementAccess.h */,
 				D91CDE3A161B993A002CA1D7 /* TiViewProxy+ElementAccess.m */,
+				DA4D8D3F166435CF00F647D7 /* tss_lexer.lm */,
+				DA4D8D471664364300F647D7 /* tss_parser.ym */,
+				DA4D8D431664362D00F647D7 /* CBStylesheet.h */,
+				DA4D8D441664362D00F647D7 /* CBStylesheet.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -139,6 +151,7 @@
 				AA747D9F0F9514B9006C5449 /* AppersonlabsCarbon_Prefix.pch in Headers */,
 				24DD6CF91134B3F500162E58 /* AppersonlabsCarbonModule.h in Headers */,
 				24DE9E1111C5FE74003F90F6 /* AppersonlabsCarbonModuleAssets.h in Headers */,
+				DA4D8D451664362D00F647D7 /* CBStylesheet.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +227,9 @@
 				24DD6CFA1134B3F500162E58 /* AppersonlabsCarbonModule.m in Sources */,
 				24DE9E1211C5FE74003F90F6 /* AppersonlabsCarbonModuleAssets.m in Sources */,
 				D91CDE3B161B9991002CA1D7 /* TiViewProxy+ElementAccess.m in Sources */,
+				DA4D8D40166435CF00F647D7 /* tss_lexer.lm in Sources */,
+				DA4D8D461664362D00F647D7 /* CBStylesheet.m in Sources */,
+				DA4D8D481664364300F647D7 /* tss_parser.ym in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
