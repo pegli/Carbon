@@ -4,17 +4,34 @@
 "Window": {
   "backgroundColor": "yellow",
 },
-// also single line comments
+
+// should not apply to iOS
+Window[platform=android]: {
+  backgroundColor: "red"
+},
+
+Button: {
+  backgroundColor: "orange"
+},
+
+Button[platform=iphone]: {
+  style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+},
+
 Label: {
   align: Ti.UI.TEXT_ALIGNMENT_CENTER
 },
+
 TableView: {
   style: Ti.UI.iPhone.TableViewStyle.PLAIN
 },
+
 "#testid": {
 },
+
 '.testclass': {
 },
+
 Label[platform=ios]: {
   backgroundColor: 'blue'
 }
