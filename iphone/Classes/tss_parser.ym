@@ -58,10 +58,14 @@ styles          :   /* empty */ {
                     }
                 |   selector T_COLON T_OBJECT_START declarations T_OBJECT_END {
                         $$ = [NSMutableArray array];
-                        [$$ addObject:[NSDictionary dictionaryWithObject:$4 forKey:$1]];
+                        if ($4) {
+                            [$$ addObject:[NSDictionary dictionaryWithObject:$4 forKey:$1]];
+                        }
                     }
                 |   styles T_COMMA selector T_COLON T_OBJECT_START declarations T_OBJECT_END {
-                        [$1 addObject:[NSDictionary dictionaryWithObject:$6 forKey:$3]];
+                        if ($6) {
+                            [$1 addObject:[NSDictionary dictionaryWithObject:$6 forKey:$3]];
+                        }
                     }
                 ;
 
