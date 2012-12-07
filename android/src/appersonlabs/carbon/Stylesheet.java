@@ -34,7 +34,9 @@ public class Stylesheet {
     private static final Pattern             SELECTOR_REGEX       = Pattern.compile("([\\.#])?([^\\[]+)(\\[[^\\]]+\\])?");
 
     private Map<String, Map<String, Object>> stylesByClass        = new HashMap<String, Map<String, Object>>();
+
     private Map<String, Map<String, Object>> stylesById           = new HashMap<String, Map<String, Object>>();
+
     private Map<String, Map<String, Object>> stylesByType         = new HashMap<String, Map<String, Object>>();
 
     public Stylesheet(TiBaseFile file) throws IOException {
@@ -65,7 +67,7 @@ public class Stylesheet {
                         dest = stylesByType;
                     }
 
-                    if (selector.predicates != null && !selector.predicates.contains("platform=ios") && !selector.predicates.contains("platform=iphone")) {
+                    if (selector.predicates == null || selector.predicates.contains("platform=android")) {
                         // TODO add the formfactor predicate
                         Map<String, Object> existing = dest.get(selector.name);
                         if (existing != null) {
@@ -91,7 +93,7 @@ public class Stylesheet {
         }
 
         String proxyId = (String) params.get("id");
-        String proxyClass = (String) params.get("class");
+        String proxyClass = (String) params.get("className");
 
         Map<String, Object> result = new HashMap<String, Object>();
 
@@ -107,8 +109,11 @@ public class Stylesheet {
         }
 
         // initialization parameters always override styles
-        result.putAll(params);
-        params = result;
+        for (String key : result.keySet()) {
+            if (!params.containsKey(key)) {
+                params.put(key, result.get(key));
+            }
+        }
     }
 
     private TssSelector parseSelector(String str) {
@@ -118,20 +123,22 @@ public class Stylesheet {
         if (m.matches()) {
             result = new TssSelector();
 
-            if ("#".equals(m.group(0))) {
+            if ("#".equals(m.group(1))) {
                 result.type = TssSelectorType.ID;
             }
-            else if (".".equals(m.group(0))) {
+            else if (".".equals(m.group(1))) {
                 result.type = TssSelectorType.CLASS;
             }
             else {
                 result.type = TssSelectorType.TYPE;
             }
 
-            result.name = m.group(1);
+            result.name = m.group(2);
 
-            if (m.group(2) != null) {
-                result.predicates = Arrays.asList(m.group(2).split(PREDICATE_SEPARATORS));
+            if (m.group(3) != null) {
+                String preds = m.group(3);
+                preds = preds.length() > 2 ? preds.substring(1, preds.length() - 1) : "";
+                result.predicates = Arrays.asList(preds.split(PREDICATE_SEPARATORS));
             }
         }
 
