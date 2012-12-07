@@ -124,10 +124,13 @@ WPATH	: 	'WPATH(' ( options { greedy = false; } : . )* ')'	{ System.err.println(
 EXPR	: 	'expr(' ( options { greedy = false; } : . )* ')'	{ System.err.println("[WARNING] expr() not supported"); }
 	;
 
-Comment	: 	'/*' ( options { greedy = false; } : . )* '*/'
-	| 	'//' ( options { greedy = false; } : . )* LT
+BlockComment	: 	'/*' ( options { greedy = false; } : . )* '*/'
 		{ skip(); }
 	;
+
+LineComment  :   '//' ( options { greedy = false; } : . )* LT
+    { skip(); }
+  ;
 
 fragment
 LT	:	'\n' | '\r'
@@ -172,7 +175,7 @@ object returns [Map<String,Object> obj]
 	;
 
 members[Map<String,Object> obj]
-	:	pair[obj] ( ',' pair[obj])*
+	:	pair[obj] ( ',' pair[obj])* ','?
 	;
 
 key returns [String text]

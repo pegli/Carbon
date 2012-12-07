@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g 2012-12-07 09:54:02
+// $ANTLR 3.4 /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g 2012-12-07 10:51:11
 
 package appersonlabs.carbon;
 
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class TSSLexer extends Lexer {
     public static final int EOF=-1;
-    public static final int T__38=38;
     public static final int T__39=39;
     public static final int T__40=40;
     public static final int T__41=41;
@@ -20,9 +19,10 @@ public class TSSLexer extends Lexer {
     public static final int T__44=44;
     public static final int T__45=45;
     public static final int T__46=46;
+    public static final int T__47=47;
     public static final int ARRAY=4;
-    public static final int CharEsc=5;
-    public static final int Comment=6;
+    public static final int BlockComment=5;
+    public static final int CharEsc=6;
     public static final int DQChar=7;
     public static final int EXPR=8;
     public static final int EscapeSeq=9;
@@ -36,24 +36,25 @@ public class TSSLexer extends Lexer {
     public static final int Identifier=17;
     public static final int Integer=18;
     public static final int LT=19;
-    public static final int NULL=20;
-    public static final int NUMBER=21;
-    public static final int OBJECT=22;
-    public static final int Predicate=23;
-    public static final int SELECTOR=24;
-    public static final int SQChar=25;
-    public static final int STRING=26;
-    public static final int STYLE=27;
-    public static final int Sign=28;
-    public static final int String=29;
-    public static final int StyleName=30;
-    public static final int TRUE=31;
-    public static final int TiConst=32;
-    public static final int TiUIFill=33;
-    public static final int TiUISize=34;
-    public static final int UnicodeEsc=35;
-    public static final int WPATH=36;
-    public static final int Whitespace=37;
+    public static final int LineComment=20;
+    public static final int NULL=21;
+    public static final int NUMBER=22;
+    public static final int OBJECT=23;
+    public static final int Predicate=24;
+    public static final int SELECTOR=25;
+    public static final int SQChar=26;
+    public static final int STRING=27;
+    public static final int STYLE=28;
+    public static final int Sign=29;
+    public static final int String=30;
+    public static final int StyleName=31;
+    public static final int TRUE=32;
+    public static final int TiConst=33;
+    public static final int TiUIFill=34;
+    public static final int TiUISize=35;
+    public static final int UnicodeEsc=36;
+    public static final int WPATH=37;
+    public static final int Whitespace=38;
 
     // delegates
     // delegators
@@ -70,36 +71,15 @@ public class TSSLexer extends Lexer {
     }
     public String getGrammarFileName() { return "/Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g"; }
 
-    // $ANTLR start "T__38"
-    public final void mT__38() throws RecognitionException {
-        try {
-            int _type = T__38;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:6:7: ( ',' )
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:6:9: ','
-            {
-            match(','); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        	// do for sure before leaving
-        }
-    }
-    // $ANTLR end "T__38"
-
     // $ANTLR start "T__39"
     public final void mT__39() throws RecognitionException {
         try {
             int _type = T__39;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:7:7: ( ':' )
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:7:9: ':'
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:6:7: ( ',' )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:6:9: ','
             {
-            match(':'); 
+            match(','); 
 
             }
 
@@ -117,10 +97,10 @@ public class TSSLexer extends Lexer {
         try {
             int _type = T__40;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:8:7: ( '[' )
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:8:9: '['
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:7:7: ( ':' )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:7:9: ':'
             {
-            match('['); 
+            match(':'); 
 
             }
 
@@ -138,10 +118,10 @@ public class TSSLexer extends Lexer {
         try {
             int _type = T__41;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:9:7: ( ']' )
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:9:9: ']'
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:8:7: ( '[' )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:8:9: '['
             {
-            match(']'); 
+            match('['); 
 
             }
 
@@ -159,12 +139,10 @@ public class TSSLexer extends Lexer {
         try {
             int _type = T__42;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:10:7: ( 'false' )
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:10:9: 'false'
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:9:7: ( ']' )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:9:9: ']'
             {
-            match("false"); 
-
-
+            match(']'); 
 
             }
 
@@ -182,10 +160,10 @@ public class TSSLexer extends Lexer {
         try {
             int _type = T__43;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:11:7: ( 'null' )
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:11:9: 'null'
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:10:7: ( 'false' )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:10:9: 'false'
             {
-            match("null"); 
+            match("false"); 
 
 
 
@@ -205,10 +183,10 @@ public class TSSLexer extends Lexer {
         try {
             int _type = T__44;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:12:7: ( 'true' )
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:12:9: 'true'
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:11:7: ( 'null' )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:11:9: 'null'
             {
-            match("true"); 
+            match("null"); 
 
 
 
@@ -228,10 +206,12 @@ public class TSSLexer extends Lexer {
         try {
             int _type = T__45;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:13:7: ( '{' )
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:13:9: '{'
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:12:7: ( 'true' )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:12:9: 'true'
             {
-            match('{'); 
+            match("true"); 
+
+
 
             }
 
@@ -249,6 +229,27 @@ public class TSSLexer extends Lexer {
         try {
             int _type = T__46;
             int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:13:7: ( '{' )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:13:9: '{'
+            {
+            match('{'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        	// do for sure before leaving
+        }
+    }
+    // $ANTLR end "T__46"
+
+    // $ANTLR start "T__47"
+    public final void mT__47() throws RecognitionException {
+        try {
+            int _type = T__47;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
             // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:14:7: ( '}' )
             // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:14:9: '}'
             {
@@ -263,7 +264,7 @@ public class TSSLexer extends Lexer {
         	// do for sure before leaving
         }
     }
-    // $ANTLR end "T__46"
+    // $ANTLR end "T__47"
 
     // $ANTLR start "Sign"
     public final void mSign() throws RecognitionException {
@@ -1480,136 +1481,64 @@ public class TSSLexer extends Lexer {
     }
     // $ANTLR end "EXPR"
 
-    // $ANTLR start "Comment"
-    public final void mComment() throws RecognitionException {
+    // $ANTLR start "BlockComment"
+    public final void mBlockComment() throws RecognitionException {
         try {
-            int _type = Comment;
+            int _type = BlockComment;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:127:9: ( '/*' ( options {greedy=false; } : . )* '*/' | '//' ( options {greedy=false; } : . )* LT )
-            int alt26=2;
-            int LA26_0 = input.LA(1);
-
-            if ( (LA26_0=='/') ) {
-                int LA26_1 = input.LA(2);
-
-                if ( (LA26_1=='*') ) {
-                    alt26=1;
-                }
-                else if ( (LA26_1=='/') ) {
-                    alt26=2;
-                }
-                else {
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 26, 1, input);
-
-                    throw nvae;
-
-                }
-            }
-            else {
-                NoViableAltException nvae =
-                    new NoViableAltException("", 26, 0, input);
-
-                throw nvae;
-
-            }
-            switch (alt26) {
-                case 1 :
-                    // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:127:12: '/*' ( options {greedy=false; } : . )* '*/'
-                    {
-                    match("/*"); 
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:127:14: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:127:17: '/*' ( options {greedy=false; } : . )* '*/'
+            {
+            match("/*"); 
 
 
 
-                    // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:127:17: ( options {greedy=false; } : . )*
-                    loop24:
-                    do {
-                        int alt24=2;
-                        int LA24_0 = input.LA(1);
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:127:22: ( options {greedy=false; } : . )*
+            loop24:
+            do {
+                int alt24=2;
+                int LA24_0 = input.LA(1);
 
-                        if ( (LA24_0=='*') ) {
-                            int LA24_1 = input.LA(2);
+                if ( (LA24_0=='*') ) {
+                    int LA24_1 = input.LA(2);
 
-                            if ( (LA24_1=='/') ) {
-                                alt24=2;
-                            }
-                            else if ( ((LA24_1 >= '\u0000' && LA24_1 <= '.')||(LA24_1 >= '0' && LA24_1 <= '\uFFFF')) ) {
-                                alt24=1;
-                            }
-
-
-                        }
-                        else if ( ((LA24_0 >= '\u0000' && LA24_0 <= ')')||(LA24_0 >= '+' && LA24_0 <= '\uFFFF')) ) {
-                            alt24=1;
-                        }
-
-
-                        switch (alt24) {
-                    	case 1 :
-                    	    // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:127:49: .
-                    	    {
-                    	    matchAny(); 
-
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    break loop24;
-                        }
-                    } while (true);
-
-
-                    match("*/"); 
-
-
-
+                    if ( (LA24_1=='/') ) {
+                        alt24=2;
                     }
-                    break;
-                case 2 :
-                    // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:128:5: '//' ( options {greedy=false; } : . )* LT
-                    {
-                    match("//"); 
-
-
-
-                    // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:128:10: ( options {greedy=false; } : . )*
-                    loop25:
-                    do {
-                        int alt25=2;
-                        int LA25_0 = input.LA(1);
-
-                        if ( (LA25_0=='\n'||LA25_0=='\r') ) {
-                            alt25=2;
-                        }
-                        else if ( ((LA25_0 >= '\u0000' && LA25_0 <= '\t')||(LA25_0 >= '\u000B' && LA25_0 <= '\f')||(LA25_0 >= '\u000E' && LA25_0 <= '\uFFFF')) ) {
-                            alt25=1;
-                        }
-
-
-                        switch (alt25) {
-                    	case 1 :
-                    	    // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:128:42: .
-                    	    {
-                    	    matchAny(); 
-
-                    	    }
-                    	    break;
-
-                    	default :
-                    	    break loop25;
-                        }
-                    } while (true);
-
-
-                    mLT(); 
-
-
-                     skip(); 
-
+                    else if ( ((LA24_1 >= '\u0000' && LA24_1 <= '.')||(LA24_1 >= '0' && LA24_1 <= '\uFFFF')) ) {
+                        alt24=1;
                     }
-                    break;
+
+
+                }
+                else if ( ((LA24_0 >= '\u0000' && LA24_0 <= ')')||(LA24_0 >= '+' && LA24_0 <= '\uFFFF')) ) {
+                    alt24=1;
+                }
+
+
+                switch (alt24) {
+            	case 1 :
+            	    // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:127:54: .
+            	    {
+            	    matchAny(); 
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop24;
+                }
+            } while (true);
+
+
+            match("*/"); 
+
+
+
+             skip(); 
 
             }
+
             state.type = _type;
             state.channel = _channel;
         }
@@ -1617,12 +1546,69 @@ public class TSSLexer extends Lexer {
         	// do for sure before leaving
         }
     }
-    // $ANTLR end "Comment"
+    // $ANTLR end "BlockComment"
+
+    // $ANTLR start "LineComment"
+    public final void mLineComment() throws RecognitionException {
+        try {
+            int _type = LineComment;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:131:14: ( '//' ( options {greedy=false; } : . )* LT )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:131:18: '//' ( options {greedy=false; } : . )* LT
+            {
+            match("//"); 
+
+
+
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:131:23: ( options {greedy=false; } : . )*
+            loop25:
+            do {
+                int alt25=2;
+                int LA25_0 = input.LA(1);
+
+                if ( (LA25_0=='\n'||LA25_0=='\r') ) {
+                    alt25=2;
+                }
+                else if ( ((LA25_0 >= '\u0000' && LA25_0 <= '\t')||(LA25_0 >= '\u000B' && LA25_0 <= '\f')||(LA25_0 >= '\u000E' && LA25_0 <= '\uFFFF')) ) {
+                    alt25=1;
+                }
+
+
+                switch (alt25) {
+            	case 1 :
+            	    // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:131:55: .
+            	    {
+            	    matchAny(); 
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop25;
+                }
+            } while (true);
+
+
+            mLT(); 
+
+
+             skip(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        	// do for sure before leaving
+        }
+    }
+    // $ANTLR end "LineComment"
 
     // $ANTLR start "LT"
     public final void mLT() throws RecognitionException {
         try {
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:134:4: ( '\\n' | '\\r' )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:137:4: ( '\\n' | '\\r' )
             // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:
             {
             if ( input.LA(1)=='\n'||input.LA(1)=='\r' ) {
@@ -1650,22 +1636,22 @@ public class TSSLexer extends Lexer {
         try {
             int _type = Whitespace;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:137:2: ( ( ' ' | LT | '\\t' )+ )
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:137:4: ( ' ' | LT | '\\t' )+
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:140:2: ( ( ' ' | LT | '\\t' )+ )
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:140:4: ( ' ' | LT | '\\t' )+
             {
-            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:137:4: ( ' ' | LT | '\\t' )+
-            int cnt27=0;
-            loop27:
+            // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:140:4: ( ' ' | LT | '\\t' )+
+            int cnt26=0;
+            loop26:
             do {
-                int alt27=2;
-                int LA27_0 = input.LA(1);
+                int alt26=2;
+                int LA26_0 = input.LA(1);
 
-                if ( ((LA27_0 >= '\t' && LA27_0 <= '\n')||LA27_0=='\r'||LA27_0==' ') ) {
-                    alt27=1;
+                if ( ((LA26_0 >= '\t' && LA26_0 <= '\n')||LA26_0=='\r'||LA26_0==' ') ) {
+                    alt26=1;
                 }
 
 
-                switch (alt27) {
+                switch (alt26) {
             	case 1 :
             	    // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:
             	    {
@@ -1683,12 +1669,12 @@ public class TSSLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt27 >= 1 ) break loop27;
+            	    if ( cnt26 >= 1 ) break loop26;
                         EarlyExitException eee =
-                            new EarlyExitException(27, input);
+                            new EarlyExitException(26, input);
                         throw eee;
                 }
-                cnt27++;
+                cnt26++;
             } while (true);
 
 
@@ -1706,78 +1692,78 @@ public class TSSLexer extends Lexer {
     // $ANTLR end "Whitespace"
 
     public void mTokens() throws RecognitionException {
-        // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:8: ( T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | Sign | Exp | Float | Integer | String | TiUISize | TiUIFill | TiConst | Identifier | StyleName | WPATH | EXPR | Comment | Whitespace )
-        int alt28=23;
-        alt28 = dfa28.predict(input);
-        switch (alt28) {
+        // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:8: ( T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | Sign | Exp | Float | Integer | String | TiUISize | TiUIFill | TiConst | Identifier | StyleName | WPATH | EXPR | BlockComment | LineComment | Whitespace )
+        int alt27=24;
+        alt27 = dfa27.predict(input);
+        switch (alt27) {
             case 1 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:10: T__38
-                {
-                mT__38(); 
-
-
-                }
-                break;
-            case 2 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:16: T__39
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:10: T__39
                 {
                 mT__39(); 
 
 
                 }
                 break;
-            case 3 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:22: T__40
+            case 2 :
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:16: T__40
                 {
                 mT__40(); 
 
 
                 }
                 break;
-            case 4 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:28: T__41
+            case 3 :
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:22: T__41
                 {
                 mT__41(); 
 
 
                 }
                 break;
-            case 5 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:34: T__42
+            case 4 :
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:28: T__42
                 {
                 mT__42(); 
 
 
                 }
                 break;
-            case 6 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:40: T__43
+            case 5 :
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:34: T__43
                 {
                 mT__43(); 
 
 
                 }
                 break;
-            case 7 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:46: T__44
+            case 6 :
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:40: T__44
                 {
                 mT__44(); 
 
 
                 }
                 break;
-            case 8 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:52: T__45
+            case 7 :
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:46: T__45
                 {
                 mT__45(); 
 
 
                 }
                 break;
-            case 9 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:58: T__46
+            case 8 :
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:52: T__46
                 {
                 mT__46(); 
+
+
+                }
+                break;
+            case 9 :
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:58: T__47
+                {
+                mT__47(); 
 
 
                 }
@@ -1879,15 +1865,23 @@ public class TSSLexer extends Lexer {
                 }
                 break;
             case 22 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:152: Comment
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:152: BlockComment
                 {
-                mComment(); 
+                mBlockComment(); 
 
 
                 }
                 break;
             case 23 :
-                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:160: Whitespace
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:165: LineComment
+                {
+                mLineComment(); 
+
+
+                }
+                break;
+            case 24 :
+                // /Users/paul/Desktop/Dropbox/apperson/carbon/Carbon/android/src/appersonlabs/carbon/TSS.g:1:177: Whitespace
                 {
                 mWhitespace(); 
 
@@ -1900,33 +1894,33 @@ public class TSSLexer extends Lexer {
     }
 
 
-    protected DFA28 dfa28 = new DFA28(this);
-    static final String DFA28_eotS =
+    protected DFA27 dfa27 = new DFA27(this);
+    static final String DFA27_eotS =
         "\5\uffff\3\30\2\uffff\1\34\1\30\2\40\1\uffff\2\30\1\uffff\2\30\2"+
         "\uffff\2\30\2\uffff\2\30\1\uffff\1\30\1\uffff\1\36\2\uffff\1\40"+
-        "\10\30\1\uffff\3\30\1\67\1\70\2\30\2\75\1\30\1\100\3\uffff\1\30"+
-        "\2\75\2\uffff\1\30\1\uffff\1\30\1\uffff\1\75\1\uffff\1\30\3\75\1"+
-        "\30\4\75\1\120\1\121\2\uffff";
-    static final String DFA28_eofS =
-        "\122\uffff";
-    static final String DFA28_minS =
+        "\2\30\2\uffff\6\30\1\uffff\3\30\1\71\1\72\2\30\2\77\1\30\1\102\3"+
+        "\uffff\1\30\2\77\2\uffff\1\30\1\uffff\1\30\1\uffff\1\77\1\uffff"+
+        "\1\30\3\77\1\30\4\77\1\122\1\123\2\uffff";
+    static final String DFA27_eofS =
+        "\124\uffff";
+    static final String DFA27_minS =
         "\1\11\4\uffff\3\56\2\uffff\1\61\1\53\2\56\1\uffff\2\56\1\uffff\1"+
-        "\56\1\53\2\uffff\2\56\1\uffff\1\101\2\56\1\uffff\1\56\1\uffff\1"+
-        "\56\2\uffff\11\56\1\101\5\56\1\50\5\56\3\uffff\3\56\1\uffff\1\101"+
-        "\1\50\1\uffff\1\56\1\101\1\56\1\uffff\13\56\2\uffff";
-    static final String DFA28_maxS =
+        "\56\1\53\1\52\1\uffff\2\56\1\uffff\1\101\2\56\1\uffff\1\56\1\uffff"+
+        "\1\56\2\uffff\3\56\2\uffff\6\56\1\101\5\56\1\50\5\56\3\uffff\3\56"+
+        "\1\uffff\1\101\1\50\1\uffff\1\56\1\101\1\56\1\uffff\13\56\2\uffff";
+    static final String DFA27_maxS =
         "\1\175\4\uffff\3\172\2\uffff\1\71\1\172\1\56\1\71\1\uffff\2\172"+
-        "\1\uffff\2\172\2\uffff\2\172\1\uffff\3\172\1\uffff\1\172\1\uffff"+
-        "\1\172\2\uffff\1\71\24\172\3\uffff\3\172\1\uffff\2\172\1\uffff\3"+
-        "\172\1\uffff\13\172\2\uffff";
-    static final String DFA28_acceptS =
+        "\1\uffff\2\172\1\57\1\uffff\2\172\1\uffff\3\172\1\uffff\1\172\1"+
+        "\uffff\1\172\2\uffff\1\71\2\172\2\uffff\22\172\3\uffff\3\172\1\uffff"+
+        "\2\172\1\uffff\3\172\1\uffff\13\172\2\uffff";
+    static final String DFA27_acceptS =
         "\1\uffff\1\1\1\2\1\3\1\4\3\uffff\1\10\1\11\4\uffff\1\16\2\uffff"+
-        "\1\23\2\uffff\1\26\1\27\2\uffff\1\22\3\uffff\1\12\1\uffff\1\13\1"+
-        "\uffff\1\15\1\14\25\uffff\1\6\1\7\1\25\3\uffff\1\21\2\uffff\1\5"+
-        "\3\uffff\1\24\13\uffff\1\17\1\20";
-    static final String DFA28_specialS =
-        "\122\uffff}>";
-    static final String[] DFA28_transitionS = {
+        "\1\23\3\uffff\1\30\2\uffff\1\22\3\uffff\1\12\1\uffff\1\13\1\uffff"+
+        "\1\15\1\14\3\uffff\1\26\1\27\22\uffff\1\6\1\7\1\25\3\uffff\1\21"+
+        "\2\uffff\1\5\3\uffff\1\24\13\uffff\1\17\1\20";
+    static final String DFA27_specialS =
+        "\124\uffff}>";
+    static final String[] DFA27_transitionS = {
             "\2\25\2\uffff\1\25\22\uffff\1\25\1\uffff\1\16\1\21\3\uffff\1"+
             "\16\3\uffff\1\12\1\1\1\12\1\21\1\24\1\14\11\15\1\2\6\uffff\4"+
             "\22\1\23\16\22\1\17\2\22\1\20\3\22\1\3\1\uffff\1\4\1\uffff\1"+
@@ -1959,63 +1953,65 @@ public class TSSLexer extends Lexer {
             "\32\27",
             "\1\36\1\uffff\1\36\1\31\1\uffff\12\37\7\uffff\32\27\1\21\3"+
             "\uffff\1\27\1\uffff\32\27",
+            "\1\45\4\uffff\1\46",
             "",
-            "",
-            "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\13\27\1\45\16\27",
-            "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\32\27",
-            "",
-            "\32\46\4\uffff\1\46\1\uffff\32\46",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
             "\13\27\1\47\16\27",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\24\27\1\50\5\27",
+            "\32\27",
+            "",
+            "\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
+            "\13\27\1\51\16\27",
+            "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
+            "\24\27\1\52\5\27",
             "",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\17\27\1\51\12\27",
+            "\17\27\1\53\12\27",
             "",
             "\1\31\1\uffff\12\37\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
             "\32\27",
             "",
             "",
             "\1\41\1\uffff\12\42",
-            "\1\53\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\23\27\1\52\6\27",
-            "\1\31\1\uffff\12\27\7\uffff\1\54\31\27\1\21\3\uffff\1\27\1"+
+            "\1\55\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
+            "\23\27\1\54\6\27",
+            "\1\31\1\uffff\12\27\7\uffff\1\56\31\27\1\21\3\uffff\1\27\1"+
             "\uffff\32\27",
+            "",
+            "",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\22\27\1\55\7\27",
-            "\1\31\1\uffff\12\56\7\uffff\32\56\1\21\3\uffff\1\56\1\uffff"+
-            "\32\56",
+            "\22\27\1\57\7\27",
+            "\1\31\1\uffff\12\60\7\uffff\32\60\1\21\3\uffff\1\60\1\uffff"+
+            "\32\60",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\13\27\1\57\16\27",
+            "\13\27\1\61\16\27",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\4\27\1\60\25\27",
+            "\4\27\1\62\25\27",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\21\27\1\61\10\27",
+            "\21\27\1\63\10\27",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\1\62\31\27",
-            "\24\64\1\63\5\64\4\uffff\1\64\1\uffff\32\64",
-            "\1\31\1\uffff\12\27\7\uffff\23\27\1\65\6\27\1\21\3\uffff\1"+
+            "\1\64\31\27",
+            "\24\66\1\65\5\66\4\uffff\1\66\1\uffff\32\66",
+            "\1\31\1\uffff\12\27\7\uffff\23\27\1\67\6\27\1\21\3\uffff\1"+
             "\27\1\uffff\32\27",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\4\27\1\66\25\27",
-            "\1\31\1\uffff\12\56\7\uffff\32\56\1\21\3\uffff\1\56\1\uffff"+
-            "\32\56",
+            "\4\27\1\70\25\27",
+            "\1\31\1\uffff\12\60\7\uffff\32\60\1\21\3\uffff\1\60\1\uffff"+
+            "\32\60",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
             "\32\27",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
             "\32\27",
-            "\1\71\5\uffff\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff"+
+            "\1\73\5\uffff\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff"+
             "\1\27\1\uffff\32\27",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\15\27\1\72\14\27",
-            "\1\76\1\uffff\12\74\7\uffff\10\74\1\73\21\74\1\21\3\uffff\1"+
-            "\74\1\uffff\32\74",
-            "\1\76\1\uffff\12\74\7\uffff\32\74\1\21\3\uffff\1\74\1\uffff"+
-            "\32\74",
-            "\1\31\1\uffff\12\27\7\uffff\7\27\1\77\22\27\1\21\3\uffff\1"+
+            "\15\27\1\74\14\27",
+            "\1\100\1\uffff\12\76\7\uffff\10\76\1\75\21\76\1\21\3\uffff"+
+            "\1\76\1\uffff\32\76",
+            "\1\100\1\uffff\12\76\7\uffff\32\76\1\21\3\uffff\1\76\1\uffff"+
+            "\32\76",
+            "\1\31\1\uffff\12\27\7\uffff\7\27\1\101\22\27\1\21\3\uffff\1"+
             "\27\1\uffff\32\27",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
             "\32\27",
@@ -2023,79 +2019,79 @@ public class TSSLexer extends Lexer {
             "",
             "",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\10\27\1\101\21\27",
-            "\1\102\1\uffff\12\74\7\uffff\32\74\1\21\3\uffff\1\74\1\uffff"+
-            "\32\74",
-            "\1\76\1\uffff\12\74\7\uffff\32\74\1\21\3\uffff\1\74\1\uffff"+
-            "\32\74",
+            "\10\27\1\103\21\27",
+            "\1\104\1\uffff\12\76\7\uffff\32\76\1\21\3\uffff\1\76\1\uffff"+
+            "\32\76",
+            "\1\100\1\uffff\12\76\7\uffff\32\76\1\21\3\uffff\1\76\1\uffff"+
+            "\32\76",
             "",
-            "\32\103\4\uffff\1\103\1\uffff\32\103",
-            "\1\104\5\uffff\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff"+
+            "\32\105\4\uffff\1\105\1\uffff\32\105",
+            "\1\106\5\uffff\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff"+
             "\1\27\1\uffff\32\27",
             "",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\24\27\1\105\5\27",
-            "\5\103\1\107\14\103\1\106\7\103\4\uffff\1\103\1\uffff\32\103",
-            "\1\76\1\uffff\12\110\7\uffff\32\110\1\21\3\uffff\1\110\1\uffff"+
-            "\32\110",
+            "\24\27\1\107\5\27",
+            "\5\105\1\111\14\105\1\110\7\105\4\uffff\1\105\1\uffff\32\105",
+            "\1\100\1\uffff\12\112\7\uffff\32\112\1\21\3\uffff\1\112\1\uffff"+
+            "\32\112",
             "",
             "\1\31\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
-            "\14\27\1\111\15\27",
-            "\1\76\1\uffff\12\110\7\uffff\10\110\1\112\21\110\1\21\3\uffff"+
-            "\1\110\1\uffff\32\110",
-            "\1\76\1\uffff\12\110\7\uffff\10\110\1\113\21\110\1\21\3\uffff"+
-            "\1\110\1\uffff\32\110",
-            "\1\76\1\uffff\12\110\7\uffff\32\110\1\21\3\uffff\1\110\1\uffff"+
-            "\32\110",
-            "\1\53\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
+            "\14\27\1\113\15\27",
+            "\1\100\1\uffff\12\112\7\uffff\10\112\1\114\21\112\1\21\3\uffff"+
+            "\1\112\1\uffff\32\112",
+            "\1\100\1\uffff\12\112\7\uffff\10\112\1\115\21\112\1\21\3\uffff"+
+            "\1\112\1\uffff\32\112",
+            "\1\100\1\uffff\12\112\7\uffff\32\112\1\21\3\uffff\1\112\1\uffff"+
+            "\32\112",
+            "\1\55\1\uffff\12\27\7\uffff\32\27\1\21\3\uffff\1\27\1\uffff"+
             "\32\27",
-            "\1\76\1\uffff\12\110\7\uffff\31\110\1\114\1\21\3\uffff\1\110"+
-            "\1\uffff\32\110",
-            "\1\76\1\uffff\12\110\7\uffff\13\110\1\115\16\110\1\21\3\uffff"+
-            "\1\110\1\uffff\32\110",
-            "\1\76\1\uffff\12\110\7\uffff\4\110\1\116\25\110\1\21\3\uffff"+
-            "\1\110\1\uffff\32\110",
-            "\1\76\1\uffff\12\110\7\uffff\13\110\1\117\16\110\1\21\3\uffff"+
-            "\1\110\1\uffff\32\110",
-            "\1\76\1\uffff\12\110\7\uffff\32\110\1\21\3\uffff\1\110\1\uffff"+
-            "\32\110",
-            "\1\76\1\uffff\12\110\7\uffff\32\110\1\21\3\uffff\1\110\1\uffff"+
-            "\32\110",
+            "\1\100\1\uffff\12\112\7\uffff\31\112\1\116\1\21\3\uffff\1\112"+
+            "\1\uffff\32\112",
+            "\1\100\1\uffff\12\112\7\uffff\13\112\1\117\16\112\1\21\3\uffff"+
+            "\1\112\1\uffff\32\112",
+            "\1\100\1\uffff\12\112\7\uffff\4\112\1\120\25\112\1\21\3\uffff"+
+            "\1\112\1\uffff\32\112",
+            "\1\100\1\uffff\12\112\7\uffff\13\112\1\121\16\112\1\21\3\uffff"+
+            "\1\112\1\uffff\32\112",
+            "\1\100\1\uffff\12\112\7\uffff\32\112\1\21\3\uffff\1\112\1\uffff"+
+            "\32\112",
+            "\1\100\1\uffff\12\112\7\uffff\32\112\1\21\3\uffff\1\112\1\uffff"+
+            "\32\112",
             "",
             ""
     };
 
-    static final short[] DFA28_eot = DFA.unpackEncodedString(DFA28_eotS);
-    static final short[] DFA28_eof = DFA.unpackEncodedString(DFA28_eofS);
-    static final char[] DFA28_min = DFA.unpackEncodedStringToUnsignedChars(DFA28_minS);
-    static final char[] DFA28_max = DFA.unpackEncodedStringToUnsignedChars(DFA28_maxS);
-    static final short[] DFA28_accept = DFA.unpackEncodedString(DFA28_acceptS);
-    static final short[] DFA28_special = DFA.unpackEncodedString(DFA28_specialS);
-    static final short[][] DFA28_transition;
+    static final short[] DFA27_eot = DFA.unpackEncodedString(DFA27_eotS);
+    static final short[] DFA27_eof = DFA.unpackEncodedString(DFA27_eofS);
+    static final char[] DFA27_min = DFA.unpackEncodedStringToUnsignedChars(DFA27_minS);
+    static final char[] DFA27_max = DFA.unpackEncodedStringToUnsignedChars(DFA27_maxS);
+    static final short[] DFA27_accept = DFA.unpackEncodedString(DFA27_acceptS);
+    static final short[] DFA27_special = DFA.unpackEncodedString(DFA27_specialS);
+    static final short[][] DFA27_transition;
 
     static {
-        int numStates = DFA28_transitionS.length;
-        DFA28_transition = new short[numStates][];
+        int numStates = DFA27_transitionS.length;
+        DFA27_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA28_transition[i] = DFA.unpackEncodedString(DFA28_transitionS[i]);
+            DFA27_transition[i] = DFA.unpackEncodedString(DFA27_transitionS[i]);
         }
     }
 
-    class DFA28 extends DFA {
+    class DFA27 extends DFA {
 
-        public DFA28(BaseRecognizer recognizer) {
+        public DFA27(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 28;
-            this.eot = DFA28_eot;
-            this.eof = DFA28_eof;
-            this.min = DFA28_min;
-            this.max = DFA28_max;
-            this.accept = DFA28_accept;
-            this.special = DFA28_special;
-            this.transition = DFA28_transition;
+            this.decisionNumber = 27;
+            this.eot = DFA27_eot;
+            this.eof = DFA27_eof;
+            this.min = DFA27_min;
+            this.max = DFA27_max;
+            this.accept = DFA27_accept;
+            this.special = DFA27_special;
+            this.transition = DFA27_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | Sign | Exp | Float | Integer | String | TiUISize | TiUIFill | TiConst | Identifier | StyleName | WPATH | EXPR | Comment | Whitespace );";
+            return "1:1: Tokens : ( T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | Sign | Exp | Float | Integer | String | TiUISize | TiUIFill | TiConst | Identifier | StyleName | WPATH | EXPR | BlockComment | LineComment | Whitespace );";
         }
     }
  
