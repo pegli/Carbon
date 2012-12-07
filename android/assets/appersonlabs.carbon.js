@@ -352,6 +352,10 @@ var main_namespace = {
 			}
 		
 			return false;
+		},
+		addTSS: function(path) {
+			initBridge(); // make sure we have access to kroll bridge
+			bridge.tssFromPath(path);
 		}
 	},
 	Platform: ti_properties.Platform,
