@@ -46,6 +46,8 @@ public class CarbonModule extends KrollModule {
 
     private ObjectMapper          mapper                 = new ObjectMapper();
 
+    private List<Stylesheet>      stylesheets            = new ArrayList<Stylesheet>();
+
     public CarbonModule() {
         super();
         mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
@@ -127,6 +129,11 @@ public class CarbonModule extends KrollModule {
                 }
             }
         }
+        
+        // apply TSS stylesheets
+        for (Stylesheet stylesheet : stylesheets) {
+            stylesheet.applyStylesForKey(key, params);
+        }
 
         if (items != null && items.size() > 0) {
             // convert items dictionaries to proxies
@@ -163,14 +170,15 @@ public class CarbonModule extends KrollModule {
 
         if (key.equalsIgnoreCase("Carbon")) {
             String path = (String) params.get("path");
-            
-            if(path != null) {
+
+            if (path != null) {
 
                 Map<String, Object> proxy = loadUIDefFromPath(path);
-                
+
                 TiViewProxy rootElement = constructViewProxy(proxy, cache);
                 return rootElement;
-            } else {
+            }
+            else {
                 Log.w(LCAT, "A UI type of json requires a path key value set to a json file in the local file path");
             }
         }
@@ -204,7 +212,7 @@ public class CarbonModule extends KrollModule {
             }
             return proxy;
         }
-        
+
         return null;
     }
 
@@ -231,6 +239,25 @@ public class CarbonModule extends KrollModule {
         result.put("root_element", rootElement);
         result.put("proxy_cache", cache);
         return result;
+    }
+
+    @Kroll.method
+    public void tssFromPath(String path) {
+        TiBaseFile f = TiFileFactory.createTitaniumFile(new String[] { "app://", path }, false);
+        if (!f.exists()) {
+            Log.w(LCAT, String.format("TSS file '%s' not found", path));
+        }
+
+        if (!f.isFile()) {
+            Log.w(LCAT, String.format("Cannot read TSS file '%s'", path));
+        }
+
+        try {
+            stylesheets.add(new Stylesheet(f));
+        }
+        catch (IOException e) {
+            Log.e(LCAT, "error reading TSS file: " + e.getMessage());
+        }
     }
 
     private TiViewProxy createProxy(String key, Map<String, Object> params) {
@@ -341,7 +368,7 @@ public class CarbonModule extends KrollModule {
         if (loc != null) {
             String[] lines = src.split("\n");
             for (int i = loc.getLineNr() - 2; i < loc.getLineNr() + 2; i++) {
-                Log.e(LCAT, String.format("\t%5d: %s", (i+1), lines[i]));
+                Log.e(LCAT, String.format("\t%5d: %s", (i + 1), lines[i]));
                 if (i == loc.getLineNr() - 1) {
                     StringBuffer buf = new StringBuffer("\t     ");
                     for (int j = 0; j < loc.getColumnNr(); j++) {

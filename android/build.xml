@@ -13,5 +13,18 @@
     </filelist>
   </path> 
 
+  <!-- task for building the ANTLR3 TSS parser source -->
+  <target name="gentssparser">
+    <mkdir dir="src/appersonlabs/carbon"/>
+    <antlr:antlr3 xmlns:antlr="antlib:org/apache/tools/ant/antlr"
+      outputdirectory="src/appersonlabs/carbon"
+      target="src/appersonlabs/carbon/TSS.g">
+      <classpath>
+        <pathelement path="${antlr3.complete}"/>
+      </classpath>
+    </antlr:antlr3>
+  </target>
+
 	<import file="${titanium.platform}/../module/android/build.xml"/>
+	
 </project>
