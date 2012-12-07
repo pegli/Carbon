@@ -132,7 +132,9 @@ public class CarbonModule extends KrollModule {
         
         // apply TSS stylesheets
         for (Stylesheet stylesheet : stylesheets) {
-            stylesheet.applyStylesForKey(key, params);
+            // TODO clean up the whole BaseWindow/Window dichotomy
+            String k = "BaseWindow".equals(key) ? "Window" : key;
+            stylesheet.applyStylesForKey(k, params);
         }
 
         if (items != null && items.size() > 0) {
