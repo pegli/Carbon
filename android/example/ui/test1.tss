@@ -7,7 +7,7 @@
 
 // should not apply to iOS
 Window[platform=android]: {
-  backgroundColor: "red"
+  backgroundColor: "cyan"
 },
 
 Button: {
@@ -19,6 +19,7 @@ Button[platform=iphone]: {
 },
 
 Label: {
+  color: "red",
   align: Ti.UI.TEXT_ALIGNMENT_CENTER
 },
 
@@ -26,10 +27,20 @@ TableView: {
   style: Ti.UI.iPhone.TableViewStyle.PLAIN
 },
 
-"#testid": {
+"#win1": {
+  backgroundColor: "red"
 },
 
-'.testclass': {
+#tabwin: {
+  backgroundColor: "white"
+},
+
+"#firstView": {
+  backgroundColor: "yellow"
+},
+
+".someview": {
+  backgroundColor: "blue"
 },
 
 Label[platform=ios]: {

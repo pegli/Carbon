@@ -3,7 +3,7 @@ var C = Carbon = require('appersonlabs.carbon');
 
 C.UI.addTSS('ui/test1.tss');
 
-var result = Carbon.UI.load('ui/test1.json');
+var result = Carbon.UI.load('ui/test_android.json');
 result.open();
 
 var button = Carbon.UI.create({"Button": {
