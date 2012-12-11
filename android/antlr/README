@@ -1,0 +1,1 @@
+Copy antlr3-ant.jar to ~/.ant/lib in order to enable the ANTLR3 task.

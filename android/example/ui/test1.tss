@@ -1,0 +1,48 @@
+/*
+  TSS files should support multiline comments
+*/
+"Window": {
+  "backgroundColor": "yellow",
+},
+
+// should not apply to iOS
+Window[platform=android]: {
+  backgroundColor: "cyan"
+},
+
+Button: {
+  backgroundColor: "orange"
+},
+
+Button[platform=iphone]: {
+  style: Titanium.UI.iPhone.SystemButtonStyle.PLAIN
+},
+
+Label: {
+  color: "red",
+  align: Ti.UI.TEXT_ALIGNMENT_CENTER
+},
+
+TableView: {
+  style: Ti.UI.iPhone.TableViewStyle.PLAIN
+},
+
+"#win1": {
+  backgroundColor: "red"
+},
+
+#tabwin: {
+  backgroundColor: "white"
+},
+
+"#firstView": {
+  backgroundColor: "yellow"
+},
+
+".someview": {
+  backgroundColor: "blue"
+},
+
+Label[platform=ios]: {
+  backgroundColor: 'blue'
+}

@@ -1,25 +1,21 @@
 // open a single window
 var C = Carbon = require('appersonlabs.carbon');
 
-var result = Carbon.UI.load('ui/test1.json');
+C.UI.addTSS('ui/test1.tss');
+
+var result = Carbon.UI.load('ui/test_android.json');
 result.open();
 
 var button = Carbon.UI.create({"Button": {
   id: "testButton2",
   title: "red button is red",
-  top: 0,
   backgroundColor: "red",
   width: 300,
   height: 100
 }});
 
-var win1 = C.UI.find('#win1');
-if (win1) {
-  win1.add(button);
-}
-else {
-  Ti.API.info('could not find win1 by id');
-}
+result.add(button);
+
 
 // basic test
 var testButton = C.UI.find('#testButton');
