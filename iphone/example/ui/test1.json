@@ -19,12 +19,12 @@
                         "barColor": "black",
                         "items": [{
                             "Button": {
-                                "title": "test"
+                                "title": "%bar_title_1%"
                             }
                         },
                         {
                             "Button": {
-                                "title": "test2"
+                                "title": "%bar_title_2%"
                             }
                         }]
                     }

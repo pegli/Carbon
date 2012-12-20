@@ -12,15 +12,18 @@
 #import "JSONKit.h"
 #import "CBStylesheet.h"
 
+#define kTemplateValueDelimiter '%'
+
 @interface AppersonlabsCarbonModule ()
-- (NSDictionary *)loadUIDefFromPath:(NSString *)path;
-- (TiViewProxy *)constructViewProxy:(NSDictionary *)dict idCache:(NSMutableDictionary *)cache;
+@property (nonatomic, strong) NSRegularExpression * templateValueRegex;
+- (TiViewProxy *)constructViewProxy:(NSDictionary *)dict idCache:(NSMutableDictionary *)cache templateValues:(NSDictionary *)templateValues;
 @end
 
 @implementation AppersonlabsCarbonModule
 
 @synthesize uimodule;
 @synthesize stylesheets;
+@synthesize templateValueRegex;
 
 #pragma mark Internal
 
@@ -41,6 +44,12 @@
 - (id)init {
     if (self = [super init]) {
         self.stylesheets = [NSMutableArray array];
+
+        NSError * error;
+        self.templateValueRegex = [NSRegularExpression regularExpressionWithPattern:@"%([^%]+)%" options:0 error:&error];
+        if (!self.templateValueRegex || error) {
+            NSLog(@"[ERROR] template regex compilation error: %@", [error description]);
+        }
     }
     return self;
 }
@@ -165,7 +174,7 @@
     return tib;
 }
 
-- (TiViewProxy *)constructViewProxy:(NSDictionary *)dict idCache:(NSMutableDictionary *)cache {
+- (TiViewProxy *)constructViewProxy:(NSDictionary *)dict idCache:(NSMutableDictionary *)cache templateValues:(NSDictionary *)templateValues {
     if (!dict || [dict count] < 1) {
         return nil;
     }
@@ -246,6 +255,27 @@
             } else if ([value hasSuffix:@"SIZE"]) {
                 [params setValue: kTiBehaviorSize forKey:k];
             }
+            
+        }
+    }
+
+    // apply templates
+    // TODO maybe run as part of the previous loop over allKeys?
+    if (templateValues) {
+        for (NSString * k in params.allKeys) {
+            NSObject * v = [params objectForKey:k];
+            if ([v isKindOfClass:[NSString class]]) {
+                NSString * vstr = (NSString *)v;
+                NSArray * matches = [self.templateValueRegex matchesInString:vstr options:0 range:NSMakeRange(0, [vstr length])];
+                if ([matches count] > 0) {
+                    NSTextCheckingResult * match = [matches objectAtIndex:0]; // should only be one match
+                    NSString * templateKey = [vstr substringWithRange:[match rangeAtIndex:1]];
+                    NSObject * templateValue = [templateValues objectForKey:templateKey];
+                    if (templateValue) {
+                        [params setObject:templateValue forKey:k];
+                    }
+                }
+            }
         }
     }
     
@@ -258,7 +288,7 @@
     if( [items count] > 0 ) {
         NSMutableArray* newItems = TiCreateNonRetainingArray();
         for (NSDictionary * item in items) {
-            [newItems addObject: [self constructViewProxy:item idCache:cache]];
+            [newItems addObject: [self constructViewProxy:item idCache:cache templateValues:templateValues]];
         }
         [params setObject: newItems forKey:@"items"];
         [newItems release];
@@ -267,7 +297,7 @@
     if( [tabs count] > 0 ) {
         NSMutableArray* newTabs = TiCreateNonRetainingArray();
         for (NSDictionary * tab in tabs) {
-            [newTabs addObject: [self constructViewProxy:tab idCache:cache]];
+            [newTabs addObject: [self constructViewProxy:tab idCache:cache templateValues:templateValues]];
         }
         [params setObject: newTabs forKey:@"tabs"];
         [newTabs release];
@@ -275,7 +305,7 @@
     
     if( window != nil ) {
         [params setObject: [self constructViewProxy:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                     window, @"Window", nil] idCache:cache] forKey:@"window"];
+                                                     window, @"Window", nil] idCache:cache templateValues:templateValues] forKey:@"window"];
     }
     
     
@@ -283,7 +313,8 @@
     if([key isEqualToString:@"Carbon"]) {
         // Pull in another file
         if([params objectForKey:@"path"] != nil) {
-            TiViewProxy * proxy = [self interfaceFromPath:[params objectForKey:@"path"] idCache:cache];
+            NSDictionary * subuidict = [self loadUIDefFromPath:[params objectForKey:@"path"]];
+            TiViewProxy * proxy = [self constructViewProxy:subuidict idCache:cache templateValues:templateValues];
             
             if (!proxy) {
                 NSLog(@"[WARN] Cannot create object of type %@", key);
@@ -309,14 +340,15 @@
         }
         
         NSString * proxyid = [params objectForKey:@"id"];
+        
         if (proxyid) {
             [cache setObject:proxy forKey:proxyid];
         }
         
         for (NSDictionary * child in children) {
-            id childProxy = [self constructViewProxy:child idCache:cache];
+            id childProxy = [self constructViewProxy:child idCache:cache templateValues:templateValues];
             if(childProxy != nil) {
-                [proxy add:[self constructViewProxy:child idCache:cache]];
+                [proxy add:[self constructViewProxy:child idCache:cache templateValues:templateValues]];
             }
         }
         
@@ -325,15 +357,18 @@
     }
 }
 
-- (id)interfaceFromPath:(NSString*) path idCache:(NSMutableDictionary *)cache {
-    NSDictionary * def = [self loadUIDefFromPath:path];
-    if (!def) return nil;
+- (id)proxiesFromUIDefinition:(NSDictionary *)uiObject templateValues:(NSDictionary *)templateValues {
+    NSMutableDictionary * cache = TiCreateNonRetainingDictionary();
     
-    NSLog(@"[INFO] Loading: %@", path);
+    TiViewProxy * rootProxy = [self constructViewProxy:uiObject idCache:cache templateValues:templateValues];
+    if (!rootProxy) return nil;
     
-    TiViewProxy * rootProxy = [self constructViewProxy:def idCache:cache];
+    NSMutableDictionary * returnObject = TiCreateNonRetainingDictionary();
     
-    return rootProxy;
+    [returnObject setObject:[rootProxy autorelease] forKey:@"root_element"];
+    [returnObject setObject:[cache autorelease] forKey:@"proxy_cache"];
+    
+    return [returnObject autorelease];
 }
 
 
@@ -345,17 +380,16 @@
     
     ENSURE_ARG_AT_INDEX(path, args, 0, NSString)
     
-    NSMutableDictionary * cache = TiCreateNonRetainingDictionary();
+    NSDictionary * templateValues;
     
-    TiViewProxy * rootProxy = [self interfaceFromPath:path idCache: cache];
-    if (!rootProxy) return nil;
+    ENSURE_ARG_OR_NULL_AT_INDEX(templateValues, args, 1, NSDictionary)
+
+    NSDictionary * uiObject = [self loadUIDefFromPath:path];
+    if (!uiObject) {
+        return nil;
+    }
     
-    NSMutableDictionary * returnObject = TiCreateNonRetainingDictionary();
-    
-    [returnObject setObject:[rootProxy autorelease] forKey:@"root_element"];
-    [returnObject setObject:[cache autorelease] forKey:@"proxy_cache"];
-    
-    return [returnObject autorelease];
+    return [self proxiesFromUIDefinition:uiObject templateValues:templateValues];
 }
 
 - (id)createFromObject:(id)args {
@@ -364,17 +398,11 @@
     
     ENSURE_ARG_AT_INDEX(uiObject, args, 0, NSDictionary)
     
-    NSMutableDictionary * cache = TiCreateNonRetainingDictionary();
+    NSDictionary * templateValues;
     
-    TiViewProxy * rootProxy = [self constructViewProxy:uiObject idCache:cache];
-    if (!rootProxy) return nil;
-    
-    NSMutableDictionary * returnObject = TiCreateNonRetainingDictionary();
-    
-    [returnObject setObject:[rootProxy autorelease] forKey:@"root_element"];
-    [returnObject setObject:[cache autorelease] forKey:@"proxy_cache"];
-    
-    return [returnObject autorelease];
+    ENSURE_ARG_OR_NULL_AT_INDEX(templateValues, args, 1, NSDictionary)
+
+    return [self proxiesFromUIDefinition:uiObject templateValues:templateValues];
 }
 
 - (void)tssFromPath:(id)args {

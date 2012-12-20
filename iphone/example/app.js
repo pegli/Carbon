@@ -3,7 +3,7 @@ var C = Carbon = require('appersonlabs.carbon');
 
 C.UI.addTSS('ui/test1.tss');
 
-var result = Carbon.UI.load('ui/test1.json');
+var result = Carbon.UI.load('ui/test1.json', { bar_title_1: 'test', bar_title_2: 'test 2'});
 result.open();
 
 var button = Carbon.UI.create({"Button": {
