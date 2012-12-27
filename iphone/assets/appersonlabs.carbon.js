@@ -310,19 +310,19 @@ string_methods = {
 var main_namespace = {
 	version: '0.0.1',
 	UI: {
-		load: function(path) {
+		load: function(path, templateValues) {
 			if(typeof path !== 'string')  throw 'the load method of Carbons UI namespace expects a file path as a string. A '+typeof(path) +' was given.';
 			
-			var values = kroll.createFromFile(path);
+			var values = kroll.createFromFile(path, templateValues);
 			
 			ti_proxy_storage.IDs = object_methods.extend(ti_proxy_storage.IDs, values.proxy_cache);
 			
 			return values.root_element;
 		},
-		create: function(object) {
+		create: function(object, templateValues) {
 			if(typeof object !== 'object') throw 'The create method of Carbons UI namespace expects an object. A '+typeof(object) +' was given.';
 			
-			var values = kroll.createFromObject(object);
+			var values = kroll.createFromObject(object, templateValues);
 
 			ti_proxy_storage.IDs = object_methods.extend(ti_proxy_storage.IDs, values.proxy_cache);
 			

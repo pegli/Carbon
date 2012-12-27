@@ -39,6 +39,10 @@ TableView: {
   backgroundColor: "yellow"
 },
 
+"#alabel": {
+  color: "#ccc"
+},
+
 ".someview": {
   backgroundColor: "blue"
 },

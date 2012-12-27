@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollEventCallback;
@@ -42,6 +44,8 @@ public class CarbonModule extends KrollModule {
 
     private static final String[] UIMODULE_PROXY_FORMATS = { "ti.modules.titanium.ui.%sProxy", "org.appcelerator.titanium.proxy.Ti%sProxy" };
 
+    private static final Pattern  TEMPLATE_KEY_REGEX     = Pattern.compile("%([^%]+)%");
+
     private KrollFunction         createWindowFunction;
 
     private ObjectMapper          mapper                 = new ObjectMapper();
@@ -58,7 +62,7 @@ public class CarbonModule extends KrollModule {
     }
 
     @SuppressWarnings("unchecked")
-    private TiViewProxy constructViewProxy(Map<String, Object> def, Map<String, Object> cache) {
+    private TiViewProxy constructViewProxy(Map<String, Object> def, Map<String, Object> cache, Map<String,Object> templateValues) {
         if (def == null || def.size() == 0) {
             return null;
         }
@@ -130,6 +134,23 @@ public class CarbonModule extends KrollModule {
             }
         }
         
+        // replace template values
+        if (templateValues != null && templateValues.size() > 0) {
+            for (String pk : params.keySet()) {
+                Object pv = params.get(pk);
+                if (pv instanceof String) {
+                    Matcher m = TEMPLATE_KEY_REGEX.matcher((String) pv);
+                    if (m.matches()) {
+                        String templateKey = m.group(1);
+                        Object templateValue = templateValues.get(templateKey);
+                        if (templateValue != null) {
+                            params.put(pk, templateValue);
+                        }
+                    }
+                }
+            }
+        }
+        
         // apply TSS stylesheets
         for (Stylesheet stylesheet : stylesheets) {
             // TODO clean up the whole BaseWindow/Window dichotomy
@@ -141,7 +162,7 @@ public class CarbonModule extends KrollModule {
             // convert items dictionaries to proxies
             List<TiViewProxy> itemProxies = new ArrayList<TiViewProxy>(items.size());
             for (Map<String, Object> item : items) {
-                TiViewProxy itemProxy = constructViewProxy(item, cache);
+                TiViewProxy itemProxy = constructViewProxy(item, cache, templateValues);
                 if (itemProxy != null) {
                     itemProxies.add(itemProxy);
                 }
@@ -153,7 +174,7 @@ public class CarbonModule extends KrollModule {
             // convert items dictionaries to proxies
             List<TiViewProxy> tabProxies = new ArrayList<TiViewProxy>(tabs.size());
             for (Map<String, Object> tab : tabs) {
-                TiViewProxy tabProxy = constructViewProxy(tab, cache);
+                TiViewProxy tabProxy = constructViewProxy(tab, cache, templateValues);
                 if (tabProxy != null) {
                     tabProxies.add(tabProxy);
                 }
@@ -164,7 +185,7 @@ public class CarbonModule extends KrollModule {
         if (window != null) {
             Map<String, Object> windowDef = new HashMap<String, Object>();
             windowDef.put("BaseWindow", window);
-            TiViewProxy windowProxy = constructViewProxy(windowDef, cache);
+            TiViewProxy windowProxy = constructViewProxy(windowDef, cache, templateValues);
             if (windowProxy != null) {
                 params.put("window", windowProxy);
             }
@@ -177,7 +198,7 @@ public class CarbonModule extends KrollModule {
 
                 Map<String, Object> proxy = loadUIDefFromPath(path);
 
-                TiViewProxy rootElement = constructViewProxy(proxy, cache);
+                TiViewProxy rootElement = constructViewProxy(proxy, cache, templateValues);
                 return rootElement;
             }
             else {
@@ -197,7 +218,7 @@ public class CarbonModule extends KrollModule {
 
                 if (children != null) {
                     for (Map<String, Object> child : children) {
-                        TiViewProxy childProxy = constructViewProxy(child, cache);
+                        TiViewProxy childProxy = constructViewProxy(child, cache, templateValues);
                         if (childProxy != null) {
                             proxy.add(childProxy);
                         }
@@ -219,11 +240,11 @@ public class CarbonModule extends KrollModule {
     }
 
     @Kroll.method
-    public KrollDict createFromFile(String path) {
+    public KrollDict createFromFile(String path, @Kroll.argument(optional = true) KrollDict templateValues) {
         Map<String, Object> def = loadUIDefFromPath(path);
         Map<String, Object> cache = new HashMap<String, Object>();
 
-        TiViewProxy rootElement = constructViewProxy(def, cache);
+        TiViewProxy rootElement = constructViewProxy(def, cache, templateValues);
 
         KrollDict result = new KrollDict();
         result.put("root_element", rootElement);
@@ -232,10 +253,10 @@ public class CarbonModule extends KrollModule {
     }
 
     @Kroll.method
-    public KrollDict createFromObject(KrollDict def) {
+    public KrollDict createFromObject(KrollDict def, @Kroll.argument(optional = true) KrollDict templateValues) {
         Map<String, Object> cache = new HashMap<String, Object>();
 
-        TiViewProxy rootElement = constructViewProxy(def, cache);
+        TiViewProxy rootElement = constructViewProxy(def, cache, templateValues);
 
         KrollDict result = new KrollDict();
         result.put("root_element", rootElement);

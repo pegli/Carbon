@@ -313,23 +313,23 @@ string_methods = {
 var main_namespace = {
 	version: '0.0.1',
 	UI: {
-		load: function(path) {			
+		load: function(path, templateValues) {			
 			if(typeof path !== 'string')  throw 'the load method of Carbons UI namespace expects a file path as a string. A '+typeof(path) +' was given.';
 			
 			initBridge(); // make sure we have access to kroll bridge
 			
-			var values = bridge.createFromFile(path);
+			var values = bridge.createFromFile(path, templateValues);
 			
 			ti_proxy_storage.IDs = object_methods.extend(ti_proxy_storage.IDs, values.proxy_cache);
 			
 			return values.root_element;
 		},
-		create: function(object) {
+		create: function(object, templateValues) {
 			if(typeof object !== 'object') throw 'The create method of Carbons UI namespace expects an object. A '+typeof(object) +' was given.';
 			
 			initBridge(); // make sure we have access to kroll bridge
 			
-			var values = bridge.createFromObject(object);
+			var values = bridge.createFromObject(object, templateValues);
 
 			ti_proxy_storage.IDs = object_methods.extend(ti_proxy_storage.IDs, values.proxy_cache);
 			
