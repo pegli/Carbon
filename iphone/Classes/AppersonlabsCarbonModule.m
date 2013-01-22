@@ -11,6 +11,7 @@
 #import "TiViewProxy.h"
 #import "JSONKit.h"
 #import "CBStylesheet.h"
+#import "TiUITableViewProxy+RowTemplates.h"
 
 #define kTemplateValueDelimiter '%'
 
@@ -266,6 +267,9 @@
     NSDictionary * window = [params objectForKey:@"window"];
     [params removeObjectsForKeys:[NSArray arrayWithObjects:@"window", nil]];
     
+    NSDictionary * rowTemplate = [params objectForKey:@"rowTemplate"];
+    [params removeObjectsForKeys:[NSArray arrayWithObjects:@"rowTemplate", nil]];
+    
     //Now that the params are cleaned... lets replace any "constants" strings
     for (NSString* k in params.allKeys) {
         NSString* value = [params objectForKey:k];
@@ -365,6 +369,15 @@
                     TemplateSetter * setter = [TemplateSetter setterForKey:k target:proxy];
                     [setters setObject:setter forKey:templateKey];
                 }
+            }
+        }
+        
+        if ([@"TableView" isEqualToString:key] && rowTemplate) {
+            for (NSString * className in rowTemplate) {
+                NSDictionary * templateUIDict = [self loadUIDefFromPath:[rowTemplate objectForKey:className]];
+                NSMutableDictionary * localTemplateSetters = [NSMutableDictionary dictionary];
+                TiViewProxy * templateProxy = [self constructViewProxy:templateUIDict idCache:nil templateSetters:localTemplateSetters];
+                // TODO store on TableView
             }
         }
         
