@@ -14,10 +14,31 @@
 
 #define kTemplateValueDelimiter '%'
 
+@interface TemplateSetter : NSObject
+@property (nonatomic, retain) id target;
+@property (nonatomic, retain) NSString * key;
++ (TemplateSetter *)setterForKey:(NSString *)key target:(id)target;
+- (void)applyValue:(id)value;
+@end
+
+@implementation TemplateSetter
++ (TemplateSetter *)setterForKey:(NSString *)key target:(id)target {
+    TemplateSetter * result = [[TemplateSetter alloc] init];
+    result.key = key;
+    result.target = target;
+    return result;
+}
+- (void)applyValue:(id)value {
+    [self.target setValue:value forKey:self.key];
+}
+@end
+
+
 @interface AppersonlabsCarbonModule ()
 @property (nonatomic, strong) NSRegularExpression * templateValueRegex;
-- (TiViewProxy *)constructViewProxy:(NSDictionary *)dict idCache:(NSMutableDictionary *)cache templateValues:(NSDictionary *)templateValues;
+- (TiViewProxy *)constructViewProxy:(NSDictionary *)dict idCache:(NSMutableDictionary *)cache templateSetters:(NSMutableDictionary *)setters;
 @end
+
 
 @implementation AppersonlabsCarbonModule
 
@@ -174,7 +195,7 @@
     return tib;
 }
 
-- (TiViewProxy *)constructViewProxy:(NSDictionary *)dict idCache:(NSMutableDictionary *)cache templateValues:(NSDictionary *)templateValues {
+- (TiViewProxy *)constructViewProxy:(NSDictionary *)dict idCache:(NSMutableDictionary *)cache templateSetters:(NSMutableDictionary *)setters {
     if (!dict || [dict count] < 1) {
         return nil;
     }
@@ -259,26 +280,6 @@
         }
     }
 
-    // apply templates
-    // TODO maybe run as part of the previous loop over allKeys?
-    if (templateValues) {
-        for (NSString * k in params.allKeys) {
-            NSObject * v = [params objectForKey:k];
-            if ([v isKindOfClass:[NSString class]]) {
-                NSString * vstr = (NSString *)v;
-                NSArray * matches = [self.templateValueRegex matchesInString:vstr options:0 range:NSMakeRange(0, [vstr length])];
-                if ([matches count] > 0) {
-                    NSTextCheckingResult * match = [matches objectAtIndex:0]; // should only be one match
-                    NSString * templateKey = [vstr substringWithRange:[match rangeAtIndex:1]];
-                    NSObject * templateValue = [templateValues objectForKey:templateKey];
-                    if (templateValue) {
-                        [params setObject:templateValue forKey:k];
-                    }
-                }
-            }
-        }
-    }
-    
     // apply stylesheets
     for (CBStylesheet * stylesheet in self.stylesheets) {
         [stylesheet applyStylesForKey:key toParams:params];
@@ -288,7 +289,7 @@
     if( [items count] > 0 ) {
         NSMutableArray* newItems = TiCreateNonRetainingArray();
         for (NSDictionary * item in items) {
-            [newItems addObject: [self constructViewProxy:item idCache:cache templateValues:templateValues]];
+            [newItems addObject: [self constructViewProxy:item idCache:cache templateSetters:setters]];
         }
         [params setObject: newItems forKey:@"items"];
         [newItems release];
@@ -297,7 +298,7 @@
     if( [tabs count] > 0 ) {
         NSMutableArray* newTabs = TiCreateNonRetainingArray();
         for (NSDictionary * tab in tabs) {
-            [newTabs addObject: [self constructViewProxy:tab idCache:cache templateValues:templateValues]];
+            [newTabs addObject: [self constructViewProxy:tab idCache:cache templateSetters:setters]];
         }
         [params setObject: newTabs forKey:@"tabs"];
         [newTabs release];
@@ -305,7 +306,7 @@
     
     if( window != nil ) {
         [params setObject: [self constructViewProxy:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                     window, @"Window", nil] idCache:cache templateValues:templateValues] forKey:@"window"];
+                                                     window, @"Window", nil] idCache:cache templateSetters:setters] forKey:@"window"];
     }
     
     
@@ -314,7 +315,7 @@
         // Pull in another file
         if([params objectForKey:@"path"] != nil) {
             NSDictionary * subuidict = [self loadUIDefFromPath:[params objectForKey:@"path"]];
-            TiViewProxy * proxy = [self constructViewProxy:subuidict idCache:cache templateValues:templateValues];
+            TiViewProxy * proxy = [self constructViewProxy:subuidict idCache:cache templateSetters:setters];
             
             if (!proxy) {
                 NSLog(@"[WARN] Cannot create object of type %@", key);
@@ -346,21 +347,35 @@
         }
         
         for (NSDictionary * child in children) {
-            id childProxy = [self constructViewProxy:child idCache:cache templateValues:templateValues];
+            id childProxy = [self constructViewProxy:child idCache:cache templateSetters:setters];
             if(childProxy != nil) {
-                [proxy add:[self constructViewProxy:child idCache:cache templateValues:templateValues]];
+                [proxy add:[self constructViewProxy:child idCache:cache templateSetters:setters]];
             }
         }
         
+        // look for template keys and construct setter objects for later use
+        for (NSString * k in params.allKeys) {
+            NSObject * v = [params objectForKey:k];
+            if ([v isKindOfClass:[NSString class]]) {
+                NSString * vstr = (NSString *)v;
+                NSArray * matches = [self.templateValueRegex matchesInString:vstr options:0 range:NSMakeRange(0, [vstr length])];
+                if ([matches count] > 0) {
+                    NSTextCheckingResult * match = [matches objectAtIndex:0]; // should only be one match
+                    NSString * templateKey = [vstr substringWithRange:[match rangeAtIndex:1]];
+                    TemplateSetter * setter = [TemplateSetter setterForKey:k target:proxy];
+                    [setters setObject:setter forKey:templateKey];
+                }
+            }
+        }
         
         return proxy;
     }
 }
 
-- (id)proxiesFromUIDefinition:(NSDictionary *)uiObject templateValues:(NSDictionary *)templateValues {
+- (id)proxiesFromUIDefinition:(NSDictionary *)uiObject templateSetters:(NSMutableDictionary *)setters {
     NSMutableDictionary * cache = TiCreateNonRetainingDictionary();
     
-    TiViewProxy * rootProxy = [self constructViewProxy:uiObject idCache:cache templateValues:templateValues];
+    TiViewProxy * rootProxy = [self constructViewProxy:uiObject idCache:cache templateSetters:setters];
     if (!rootProxy) return nil;
     
     NSMutableDictionary * returnObject = TiCreateNonRetainingDictionary();
@@ -380,7 +395,7 @@
     
     ENSURE_ARG_AT_INDEX(path, args, 0, NSString)
     
-    NSDictionary * templateValues;
+    NSMutableDictionary * templateValues;
     
     ENSURE_ARG_OR_NULL_AT_INDEX(templateValues, args, 1, NSDictionary)
 
@@ -389,7 +404,15 @@
         return nil;
     }
     
-    return [self proxiesFromUIDefinition:uiObject templateValues:templateValues];
+    NSMutableDictionary * templateSetters = [NSMutableDictionary dictionary];
+    id result = [self proxiesFromUIDefinition:uiObject templateSetters:templateSetters];
+    
+    for (NSString * key in [templateValues keyEnumerator]) {
+        TemplateSetter * setter = [templateSetters objectForKey:key];
+        [setter applyValue:[templateValues objectForKey:key]];
+    }
+    
+    return result;
 }
 
 - (id)createFromObject:(id)args {
@@ -402,7 +425,15 @@
     
     ENSURE_ARG_OR_NULL_AT_INDEX(templateValues, args, 1, NSDictionary)
 
-    return [self proxiesFromUIDefinition:uiObject templateValues:templateValues];
+    NSMutableDictionary * templateSetters = [NSMutableDictionary dictionary];
+    id result = [self proxiesFromUIDefinition:uiObject templateSetters:templateSetters];
+    
+    for (NSString * key in [templateValues keyEnumerator]) {
+        TemplateSetter * setter = [templateSetters objectForKey:key];
+        [setter applyValue:[templateValues objectForKey:key]];
+    }
+    
+    return result;
 }
 
 - (void)tssFromPath:(id)args {
