@@ -6,10 +6,5 @@
  */
 #import "TiModule.h"
 
-@interface AppersonlabsCarbonModule : TiModule {
-@private
-	NSMutableDictionary *tibs;
-}
-@property (nonatomic, strong) TiModule * uimodule;
-@property (nonatomic, strong) NSMutableArray * stylesheets;
+@interface AppersonlabsCarbonModule : TiModule
 @end
