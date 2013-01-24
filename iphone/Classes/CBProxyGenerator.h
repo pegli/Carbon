@@ -13,8 +13,8 @@
 @class TiViewProxy;
 
 @interface TemplateSetter : NSObject
-@property (nonatomic, retain) id target;
-@property (nonatomic, retain) NSString * key;
+@property (nonatomic, strong) id target;
+@property (nonatomic, strong) NSString * key;
 + (TemplateSetter *)setterForKey:(NSString *)key target:(id)target;
 - (void)applyValue:(id)value;
 @end

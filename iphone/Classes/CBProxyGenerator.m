@@ -17,7 +17,7 @@
     TemplateSetter * result = [[TemplateSetter alloc] init];
     result.key = key;
     result.target = target;
-    return result;
+    return [result autorelease];
 }
 - (void)applyValue:(id)value {
     [self.target setValue:value forKey:self.key];

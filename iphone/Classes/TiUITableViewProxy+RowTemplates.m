@@ -81,6 +81,7 @@ static char PARSED_ROW_TEMPLATES_KEY;
             [tableViewRows addObject:proxy];
         }
         [self setTemplateData:tableViewRows withObject:object];
+        [proxyGenerator release];
     }
     else {
         NSLog(@"default call to setData");

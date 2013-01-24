@@ -35,7 +35,9 @@
 	[super startup];
 
     // execution context isn't set prior to call to startup
-    self.proxyGenerator = [[CBProxyGenerator alloc] initWithExecutionContext:self.executionContext];
+    CBProxyGenerator * proxyGenerator = [[CBProxyGenerator alloc] initWithExecutionContext:self.executionContext];
+    self.proxyGenerator = proxyGenerator;
+    [proxyGenerator release];
 
 	NSLog(@"[INFO] %@ loaded",self);
 }
