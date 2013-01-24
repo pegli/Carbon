@@ -10,5 +10,5 @@
 
 @interface TiUITableViewProxy (RowTemplates)
 @property (nonatomic, strong) NSDictionary * rowTemplate;
-@property (nonatomic, strong) NSDictionary * templateSetters;
+@property (nonatomic, strong) NSDictionary * parsedRowTemplates;
 @end

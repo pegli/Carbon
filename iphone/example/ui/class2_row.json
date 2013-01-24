@@ -1,5 +1,42 @@
 {
 	"TableViewRow": {
-		"backgroundColor": "green"
+		"backgroundColor": "green",
+		"height": 58,
+		"children": [
+		  {
+		    "ImageView": {
+		      "top": 8,
+		      "left": 8,
+		      "width": 42,
+		      "height": 42,
+		      "image": "%image%"
+		    }
+		  },
+		  {
+		    "Label": {
+		      "top": 4,
+		      "left": 58,
+		      "width": "Ti.UI.SIZE",
+		      "text": "%title%",
+		      "font": {
+		        "fontWeight": "bold"
+		      }
+		    }
+		  },
+		  {
+		    "Label": {
+		      "bottom": 8,
+		      "left": 58,
+		      "width": "Ti.UI.SIZE",
+		      "height": "Ti.UI.SIZE",
+		      "text": "%subtitle%",
+		      "font": {
+		        "fontSize": 12,
+		        "fontStyle": "italic"
+		      }
+		    }
+		  }
+		  
+		]
 	}
 }

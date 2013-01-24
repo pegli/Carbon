@@ -9,6 +9,7 @@
 #import "CBProxyGenerator.h"
 #import "TiHost.h"
 #import "TiViewProxy.h"
+#import "TiUITableViewProxy+RowTemplates.h"
 #import "JSONKit.h"
 
 @implementation TemplateSetter
@@ -347,13 +348,14 @@ NSMutableDictionary *tibs;
         }
         
         if ([@"TableView" isEqualToString:key] && rowTemplate) {
+            // parse the row template files and add them to the table view
+            NSMutableDictionary * parsedRowTemplates = [NSMutableDictionary dictionary];
             for (NSString * className in rowTemplate) {
-                NSDictionary * templateUIDict = [self loadUIDefFromPath:[rowTemplate objectForKey:className]];
-                // TODO store parsed ui dict on table view and construct in setData
-                NSMutableDictionary * localTemplateSetters = [NSMutableDictionary dictionary];
-                TiViewProxy * templateProxy = [self constructViewProxy:templateUIDict idCache:nil templateSetters:localTemplateSetters];
-                // TODO store on TableView
+                NSObject * obj = [rowTemplate objectForKey:className];
+                NSDictionary * templateUIDict = [obj isKindOfClass:[NSString class]] ? [self loadUIDefFromPath:(NSString *)obj] : (NSDictionary *)obj;
+                [parsedRowTemplates setObject:templateUIDict forKey:className];
             }
+            ((TiUITableViewProxy *) proxy).parsedRowTemplates = parsedRowTemplates;
         }
         
         return proxy;

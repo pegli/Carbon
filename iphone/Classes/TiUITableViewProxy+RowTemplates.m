@@ -10,9 +10,10 @@
 
 #import "TiUITableViewProxy+RowTemplates.h"
 #import <objc/runtime.h>
+#import "CBProxyGenerator.h"
 
 static char ROW_TEMPLATE_KEY;
-static char TEMPLATE_SETTERS_KEY;
+static char PARSED_ROW_TEMPLATES_KEY;
 
 @implementation TiUITableViewProxy (RowTemplates)
 
@@ -27,8 +28,8 @@ static char TEMPLATE_SETTERS_KEY;
     method_exchangeImplementations(class_getInstanceMethod(self, @selector(setData:withObject:)), class_getInstanceMethod(self, @selector(setTemplateData:withObject:)));
 }
 
-- (void)setRowTemplate:(NSDictionary *)rowTemplate {
-    objc_setAssociatedObject(self, &ROW_TEMPLATE_KEY, rowTemplate, OBJC_ASSOCIATION_RETAIN);
+- (void)setRowTemplate:(NSDictionary *)value {
+    objc_setAssociatedObject(self, &ROW_TEMPLATE_KEY, value, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (NSDictionary *)rowTemplate {
@@ -40,23 +41,51 @@ static char TEMPLATE_SETTERS_KEY;
     return result;
 }
 
-- (void)setTemplateSetters:(NSDictionary *)value {
-    objc_setAssociatedObject(self, &TEMPLATE_SETTERS_KEY, value, OBJC_ASSOCIATION_RETAIN);
+- (void)setParsedRowTemplates:(NSDictionary *)value {
+    objc_setAssociatedObject(self, &PARSED_ROW_TEMPLATES_KEY, value, OBJC_ASSOCIATION_RETAIN);
 }
 
-- (NSDictionary *)templateSetters {
-    return (NSDictionary *)objc_getAssociatedObject(self, &TEMPLATE_SETTERS_KEY);
+- (NSDictionary *)parsedRowTemplates {
+    return (NSDictionary *)objc_getAssociatedObject(self, &PARSED_ROW_TEMPLATES_KEY);
 }
 
 
 #pragma mark TiUITableViewProxy methods
 
--(void)setTemplateData:(id)args withObject:(id)rows {
+/**
+ If row templates have been defined on this table view, the "rows" parameter must be an array
+ of dictionaries which contain template substitution data.  If no row templates have been defined,
+ then this method uses the default behavior of TableView.setData().
+ */
+-(void)setTemplateData:(id)data withObject:(id)object {
     // rows is an array of dictionaries
-    if (self.templateSetters) {
-        NSLog(@"TODO substitute values into proxies");
+    if (self.parsedRowTemplates) {
+        CBProxyGenerator * proxyGenerator = [[CBProxyGenerator alloc] initWithExecutionContext:self.executionContext];
+        NSMutableArray * tableViewRows = [NSMutableArray arrayWithCapacity:[data count]];
+        for (NSDictionary * row in data) {
+            NSString * className = [row objectForKey:@"className"];
+            NSDictionary * uidef = [self.parsedRowTemplates objectForKey:className];
+            if (!uidef) {
+                NSLog(@"[WARNING] TableView row template class \"%@\" not found", className);
+                continue;
+            }
+            
+            NSMutableDictionary * templateSetters = [NSMutableDictionary dictionary];
+            TiViewProxy * proxy = [proxyGenerator constructViewProxy:uidef idCache:nil templateSetters:templateSetters];
+
+            for (NSString * key in row) {
+                TemplateSetter * setter = [templateSetters objectForKey:key];
+                [setter applyValue:[row objectForKey:key]];
+            }
+            
+            [tableViewRows addObject:proxy];
+        }
+        [self setTemplateData:tableViewRows withObject:object];
     }
-    [self setTemplateData:args withObject:rows];
+    else {
+        NSLog(@"default call to setData");
+        [self setTemplateData:data withObject:object];
+    }
 }
 
 @end
