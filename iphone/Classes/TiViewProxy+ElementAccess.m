@@ -31,8 +31,7 @@ static char CHILDREN_BY_ID_KEY;
 #pragma mark Public API
 
 - (id)elementWithID:(id)args {
-    
-    NSString * elid;
+    NSString * elid = nil;
     ENSURE_ARG_AT_INDEX(elid, args, 0, NSString)
     
     return [self.childrenByID objectForKey:elid];

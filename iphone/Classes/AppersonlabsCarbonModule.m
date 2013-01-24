@@ -71,11 +71,11 @@
 
 - (id)createFromFile:(id)args {
     
-    NSString * path;
+    NSString * path = nil;
     
     ENSURE_ARG_AT_INDEX(path, args, 0, NSString)
     
-    NSMutableDictionary * templateValues;
+    NSMutableDictionary * templateValues = nil;
     
     ENSURE_ARG_OR_NULL_AT_INDEX(templateValues, args, 1, NSDictionary)
 
@@ -97,11 +97,11 @@
 
 - (id)createFromObject:(id)args {
     
-    NSDictionary * uiObject;
+    NSDictionary * uiObject = nil;
     
     ENSURE_ARG_AT_INDEX(uiObject, args, 0, NSDictionary)
     
-    NSDictionary * templateValues;
+    NSDictionary * templateValues = nil;
     
     ENSURE_ARG_OR_NULL_AT_INDEX(templateValues, args, 1, NSDictionary)
 
@@ -117,7 +117,7 @@
 }
 
 - (void)tssFromPath:(id)args {
-    NSString * path;
+    NSString * path = nil;
     ENSURE_ARG_AT_INDEX(path, args, 0, NSString)
 
     NSString * abspath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:path];
