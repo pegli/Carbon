@@ -1,0 +1,13 @@
+{
+  "Window": {
+    "backgroundColor": "blue",
+    "children": [
+      {
+        "TableView": {
+          "id": "tableView",
+          "rowTemplate": { "class1": "ui/class1_row.json", "class2": "ui/class2_row.json" }
+        }
+      }
+    ]
+  }
+}

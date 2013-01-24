@@ -1,0 +1,7 @@
+{
+	"TableViewRow": {
+		"backgroundColor": "red",
+		"height": 30,
+		"title": "%title%"
+	}
+}
